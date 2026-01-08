@@ -11,15 +11,12 @@ header{padding:40px 20px;border-bottom:1px solid #222;}
 header h1{font-size:42px;letter-spacing:4px;}
 header p{color:#aaa;margin-top:10px;}
 .back{margin-top:20px;}
-.back a, .admin-btn{color:#00aaff;text-decoration:none;font-size:14px;cursor:pointer;}
+.back a{color:#00aaff;text-decoration:none;font-size:14px;}
 .section{padding:60px 20px;}
 .list-box{max-width:500px;margin:auto;border:3px solid #fff;border-radius:18px;padding:30px;}
 .list-item{padding:15px;border-bottom:1px solid #222;letter-spacing:2px;display:flex;justify-content:space-between;align-items:center;}
 .list-item:last-child{border-bottom:none;}
 .list-item:hover{background:rgba(0,170,255,0.06);box-shadow:inset 0 0 0 1px #00aaff;}
-.list-item input{width:60%;padding:3px;border-radius:3px;border:none;background:#111;color:#fff;}
-.list-item button{padding:3px 6px;margin-left:5px;border:none;border-radius:3px;background:#00aaff;color:#fff;cursor:pointer;}
-.list-item button:hover{background:#0088cc;}
 footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;}
 </style>
 </head>
@@ -29,8 +26,7 @@ footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;}
   <h1>LISTNAME</h1>
   <p>DRAKESTYLE MEMBER</p>
   <div class="back">
-    <a href="index.html">← BACK TO HOME</a> | 
-    <span class="admin-btn" onclick="adminLogin()">ADMIN LOGIN</span>
+    <a href="index.html">← BACK TO HOME</a>
   </div>
 </header>
 
@@ -44,12 +40,12 @@ footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;}
 </footer>
 
 <script>
-// ดึงค่าการ์ดจาก URL
+// ดึงกลุ่มจาก URL
 const urlParams = new URLSearchParams(window.location.search);
 const card = urlParams.get('card');
 const listBox = document.getElementById('list-box');
 
-// ข้อมูลสมาชิก default หรือจาก localStorage
+// ข้อมูลสมาชิก
 let membersData = JSON.parse(localStorage.getItem('members')) || {
   comingsoon:[
     {name:'COMING SOON 1', fb:'https://facebook.com/comingsoon1'},
@@ -67,84 +63,14 @@ let membersData = JSON.parse(localStorage.getItem('members')) || {
 function renderMembers(){
   listBox.innerHTML='';
   const members = membersData[card] || [{name:'ไม่มีสมาชิก', fb:'#'}];
-  members.forEach((member,i)=>{
+  members.forEach((member)=>{
     const div = document.createElement('div');
     div.className='list-item';
-    div.innerHTML=`
-      <span>${member.name}</span>
-      <span><a href="${member.fb}" target="_blank">Facebook</a></span>
-    `;
+    div.innerHTML=`<span>${member.name}</span><span><a href="${member.fb}" target="_blank">Facebook</a></span>`;
     listBox.appendChild(div);
   });
 }
 
-// ADMIN LOGIN
-function adminLogin(){
-  const password = prompt("กรุณาใส่รหัส ADMIN:");
-  if(password === "darke0808024062"){ // <-- เปลี่ยนรหัสที่นี่
-    enableAdmin();
-  } else {
-    alert("มึงเดาไม่ถูกหรอกไอโง่");
-  }
-}
-
-// เปิดโหมดแก้ไข
-function enableAdmin(){
-  listBox.innerHTML='';
-  const members = membersData[card] || [];
-  members.forEach((member,i)=>{
-    const div = document.createElement('div');
-    div.className='list-item';
-    div.innerHTML=`
-      <input value="${member.name}" id="name-${i}">
-      <input value="${member.fb}" id="fb-${i}">
-      <button onclick="saveMember(${i})">บันทึก</button>
-      <button onclick="deleteMember(${i})">ลบ</button>
-    `;
-    listBox.appendChild(div);
-  });
-
-  // ปุ่มเพิ่มสมาชิก
-  const addBtn = document.createElement('button');
-  addBtn.textContent='เพิ่มสมาชิก';
-  addBtn.style.marginTop='10px';
-  addBtn.onclick = addMember;
-  listBox.appendChild(addBtn);
-}
-
-// บันทึกสมาชิก
-function saveMember(index){
-  const name = document.getElementById(`name-${index}`).value;
-  const fb = document.getElementById(`fb-${index}`).value;
-  membersData[card][index]={name, fb};
-  localStorage.setItem('members', JSON.stringify(membersData));
-  alert('บันทึกเรียบร้อย');
-  renderMembers();
-}
-
-// ลบสมาชิก
-function deleteMember(index){
-  if(confirm('ต้องการลบสมาชิกนี้?')){
-    membersData[card].splice(index,1);
-    localStorage.setItem('members', JSON.stringify(membersData));
-    renderMembers();
-  }
-}
-
-// เพิ่มสมาชิกใหม่
-function addMember(){
-  const name = prompt('ชื่อสมาชิกใหม่:');
-  const fb = prompt('Facebook link:');
-  if(name && fb){
-    membersData[card].push({name, fb});
-    localStorage.setItem('members', JSON.stringify(membersData));
-    renderMembers();
-  } else {
-    alert('กรอกชื่อและ Facebook');
-  }
-}
-
-// แสดงสมาชิกตอนโหลดหน้า
 renderMembers();
 </script>
 
