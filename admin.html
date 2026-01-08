@@ -6,8 +6,9 @@
 <title>ADMIN PANEL | DRAKESTYLE</title>
 <style>
 body{background:#000;color:#fff;font-family:Arial, Helvetica, sans-serif;text-align:center;padding:50px;}
-input{padding:5px;margin:5px;width:250px;border-radius:5px;border:none;}
-button{padding:5px 10px;border:none;border-radius:5px;background:#00aaff;color:#fff;cursor:pointer;}
+input[type=text]{padding:5px;margin:5px;width:250px;border-radius:5px;border:none;}
+input[type=color]{padding:5px;margin:5px;border:none;}
+button{padding:5px 10px;margin:3px;border:none;border-radius:5px;background:#00aaff;color:#fff;cursor:pointer;}
 button:hover{background:#0088cc;}
 .member-box{border:2px solid #fff;padding:15px;margin:10px;border-radius:10px;text-align:left;}
 label{display:block;margin-top:5px;}
@@ -16,11 +17,11 @@ label{display:block;margin-top:5px;}
 <body>
 
 <h1>ADMIN PANEL</h1>
-<p>แก้ไขรายชื่อสมาชิก, Facebook, รูปโปรไฟล์, FONT และ Background</p>
+<p>แก้ไขสมาชิก, รูปโปรไฟล์, FONT และ Background</p>
 
-<label>เลือก FONT ตัวอักษร:</label>
+<label>Font ตัวอักษร:</label>
 <input type="text" id="fontInput" placeholder="เช่น Arial" oninput="changeFont()">
-<label>เปลี่ยน Background Color:</label>
+<label>Background Color:</label>
 <input type="color" id="bgColor" value="#000000" onchange="changeBG()">
 
 <div id="members"></div>
@@ -28,11 +29,26 @@ label{display:block;margin-top:5px;}
 <a href="index.html">กลับหน้าเว็บ</a>
 
 <script>
-let membersData = JSON.parse(localStorage.getItem('members')) || {
-  comingsoon:[{name:'COMING SOON 1', fb:'https://facebook.com/comingsoon1', img:''},{name:'COMING SOON 2', fb:'https://facebook.com/comingsoon2', img:''}],
-  drakestyle:[{name:'DRAKESTYLE', fb:'https://facebook.com/drakestyle', img:''}],
-  tested:[{name:"TESTE'D 1", fb:'https://facebook.com/tested1', img:''}]
+let stored = JSON.parse(localStorage.getItem('membersData'));
+let membersData = stored ? stored.members : {
+  comingsoon:[
+    {name:'COMING SOON 1', fb:'https://facebook.com/comingsoon1', img:''},
+    {name:'COMING SOON 2', fb:'https://facebook.com/comingsoon2', img:''}
+  ],
+  drakestyle:[
+    {name:'DRAKESTYLE', fb:'https://facebook.com/drakestyle', img:''}
+  ],
+  tested:[
+    {name:"TESTE'D 1", fb:'https://facebook.com/tested1', img:''}
+  ]
 };
+let fontFamily = stored && stored.font ? stored.font : 'Arial, Helvetica, sans-serif';
+let bgColor = stored && stored.bg ? stored.bg : '#000';
+
+document.body.style.fontFamily = fontFamily;
+document.body.style.backgroundColor = bgColor;
+document.getElementById('fontInput').value = fontFamily;
+document.getElementById('bgColor').value = bgColor;
 
 function renderMembers(){
   const container = document.getElementById('members');
@@ -43,9 +59,9 @@ function renderMembers(){
     membersData[card].forEach((m,i)=>{
       const div = document.createElement('div'); div.className='member-box';
       div.innerHTML=`
-        <label>ชื่อ:</label><input value="${m.name}" id="${card}-name-${i}">
-        <label>Facebook Link:</label><input value="${m.fb}" id="${card}-fb-${i}">
-        <label>รูปโปรไฟล์ URL:</label><input value="${m.img}" id="${card}-img-${i}">
+        <label>ชื่อ:</label><input type="text" value="${m.name}" id="${card}-name-${i}">
+        <label>Facebook Link:</label><input type="text" value="${m.fb}" id="${card}-fb-${i}">
+        <label>รูปโปรไฟล์ URL:</label><input type="text" value="${m.img}" id="${card}-img-${i}">
         <button onclick="saveMember('${card}',${i})">บันทึก</button>
         <button onclick="deleteMember('${card}',${i})">ลบ</button>
       `;
@@ -55,18 +71,18 @@ function renderMembers(){
 }
 
 function saveMember(card,index){
-  const name=document.getElementById(`${card}-name-${index}`).value;
-  const fb=document.getElementById(`${card}-fb-${index}`).value;
-  const img=document.getElementById(`${card}-img-${index}`).value;
-  membersData[card][index]={name,fb,img};
-  localStorage.setItem('members', JSON.stringify(membersData));
+  const name = document.getElementById(`${card}-name-${index}`).value;
+  const fb = document.getElementById(`${card}-fb-${index}`).value;
+  const img = document.getElementById(`${card}-img-${index}`).value;
+  membersData[card][index]={name, fb, img};
+  localStorage.setItem('membersData', JSON.stringify({members:membersData,font:fontFamily,bg:bgColor}));
   alert('บันทึกเรียบร้อย');
 }
 
 function deleteMember(card,index){
   if(confirm('ต้องการลบสมาชิกนี้?')){
     membersData[card].splice(index,1);
-    localStorage.setItem('members', JSON.stringify(membersData));
+    localStorage.setItem('membersData', JSON.stringify({members:membersData,font:fontFamily,bg:bgColor}));
     renderMembers();
   }
 }
@@ -75,16 +91,21 @@ function addMember(){
   const card=prompt('ใส่กลุ่มสมาชิก (comingsoon / drakestyle / tested)');
   if(card && membersData[card]){
     membersData[card].push({name:'ชื่อใหม่', fb:'#', img:''});
-    localStorage.setItem('members', JSON.stringify(membersData));
+    localStorage.setItem('membersData', JSON.stringify({members:membersData,font:fontFamily,bg:bgColor}));
     renderMembers();
   }else{alert('กลุ่มไม่ถูกต้อง');}
 }
 
 function changeFont(){
-  document.body.style.fontFamily=document.getElementById('fontInput').value;
+  fontFamily = document.getElementById('fontInput').value;
+  document.body.style.fontFamily = fontFamily;
+  localStorage.setItem('membersData', JSON.stringify({members:membersData,font:fontFamily,bg:bgColor}));
 }
+
 function changeBG(){
-  document.body.style.backgroundColor=document.getElementById('bgColor').value;
+  bgColor = document.getElementById('bgColor').value;
+  document.body.style.backgroundColor = bgColor;
+  localStorage.setItem('membersData', JSON.stringify({members:membersData,font:fontFamily,bg:bgColor}));
 }
 
 renderMembers();
