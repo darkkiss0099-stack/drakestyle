@@ -7,12 +7,11 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <style>
 body{margin:0;padding:0;background:#000;color:#fff;font-family:Arial, Helvetica, sans-serif;}
-header{padding:40px 20px;text-align:center;border-bottom:1px solid #222;}
+header{padding:40px 20px;border-bottom:1px solid #222;text-align:center;}
 header h1{font-size:42px;letter-spacing:4px;}
 header p{color:#aaa;margin-top:10px;}
-#search-box{margin:20px auto;display:block;padding:10px;width:90%;max-width:400px;border-radius:5px;border:none;font-size:16px;}
-.back a{color:#00aaff;text-decoration:none;font-size:14px;margin-top:10px;display:inline-block;}
-.section{padding:30px 20px;}
+.back a{color:#fff;text-decoration:none;font-size:14px;margin-top:10px;display:inline-block;}
+.section{padding:50px 20px;}
 .group-title{font-size:28px;text-align:left;margin:40px 0 20px 0;letter-spacing:2px;border-bottom:1px solid #444;padding-bottom:10px;}
 .cards-container{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;}
 .member-card{background:#111;border:2px solid #fff;border-radius:15px;padding:15px;width:220px;text-align:center;transition:0.3s;}
@@ -22,7 +21,7 @@ header p{color:#aaa;margin-top:10px;}
 .member-card a{color:#fff;text-decoration:none;font-weight:bold;display:flex;align-items:center;justify-content:center;}
 .member-card a i{margin-right:6px;}
 footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;text-align:center;}
-#hero-logo{width:100px;margin-top:10px;display:block;}
+#site-logo{width:80px;margin-top:10px;display:none;}
 </style>
 </head>
 <body>
@@ -30,8 +29,7 @@ footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;tex
 <header>
   <h1>LISTNAME</h1>
   <p>DRAKESTYLE MEMBER</p>
-  <img id="hero-logo" src="" alt="HERO LOGO">
-  <input type="text" id="search-box" placeholder="ค้นหาชื่อสมาชิก...">
+  <img id="site-logo" src="" alt="โลโก้">
   <div class="back"><a href="index.html">← BACK TO HOME</a></div>
 </header>
 
@@ -40,56 +38,70 @@ footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;tex
 <footer>© 2026 DRAKE | DESIGNED BY CRYNET</footer>
 
 <script>
-let stored = JSON.parse(localStorage.getItem('membersData')) || {};
-let membersData = stored.members || {
-  comingsoon:[{name:'COMING SOON', fb:'https://facebook.com/comingsoon', img:''}],
+const urlParams = new URLSearchParams(window.location.search);
+const selectedCard = urlParams.get('card');
+
+// โหลดจาก localStorage หรือ default
+let stored = JSON.parse(localStorage.getItem('membersData'));
+let membersData = stored ? stored.members : {
+  comingsoon:[{name:'COMING SOON 1', fb:'https://facebook.com/comingsoon1', img:''}],
   drakestyle:[{name:'DRAKESTYLE', fb:'https://facebook.com/drakestyle', img:''}],
-  tested:[{name:"TESTE'D", fb:'https://facebook.com/tested', img:''}]
+  tested:[{name:"TESTE'D 1", fb:'https://facebook.com/tested1', img:''}]
 };
-let fontFamily = stored.font || 'Arial, Helvetica, sans-serif';
-let bgColor = stored.bg || '#000';
-let heroLogo = stored.hero || '';
+let heroLogo = stored && stored.hero ? stored.hero : '';
+let fontFamily = stored && stored.font ? stored.font : 'Arial, Helvetica, sans-serif';
+let bgColor = stored && stored.bg ? stored.bg : '#000';
+let logoURL = stored && stored.logo ? stored.logo : '';
+let showLogo = stored && stored.showLogo ? stored.showLogo : 'no';
 
 document.body.style.fontFamily = fontFamily;
 document.body.style.backgroundColor = bgColor;
-if(heroLogo){document.getElementById('hero-logo').src = heroLogo;}
 
-const section = document.getElementById('members-section');
-const searchBox = document.getElementById('search-box');
-
-function renderGroups(filter=''){
-  section.innerHTML='';
-  for(let group in membersData){
-    let filteredMembers = membersData[group].filter(m=>m.name.toLowerCase().includes(filter.toLowerCase()));
-    if(filteredMembers.length===0) continue;
-
-    const title = document.createElement('div');
-    title.className='group-title';
-    title.textContent = group.toUpperCase();
-    section.appendChild(title);
-
-    const container = document.createElement('div');
-    container.className='cards-container';
-
-    filteredMembers.forEach(member=>{
-      const card = document.createElement('div');
-      card.className='member-card';
-      let imgSrc = member.img ? member.img : `https://graph.facebook.com/${member.fb.split('/').pop()}/picture?type=large`;
-      card.innerHTML = `
-        <img src="${imgSrc}" alt="profile">
-        <h3>${member.name}</h3>
-        <a href="${member.fb}" target="_blank"><i class="fab fa-facebook-f"></i>Facebook</a>
-      `;
-      container.appendChild(card);
-    });
-
-    section.appendChild(container);
-  }
+if(showLogo==='yes' && logoURL){
+  let logo = document.getElementById('site-logo');
+  logo.src = logoURL;
+  logo.style.display='block';
 }
 
-searchBox.addEventListener('input',()=>renderGroups(searchBox.value));
+// HERO LOGO
+if(heroLogo){
+  const heroLogoImg = document.getElementById('site-logo');
+  heroLogoImg.src = heroLogo;
+  heroLogoImg.style.display='block';
+}
 
-renderGroups();
+const section = document.getElementById('members-section');
+
+function renderGroup(groupName, members){
+  const title = document.createElement('div');
+  title.className='group-title';
+  title.textContent = groupName.toUpperCase();
+  section.appendChild(title);
+
+  const container = document.createElement('div');
+  container.className='cards-container';
+  members.forEach(member=>{
+    const card = document.createElement('div');
+    card.className='member-card';
+    let imgSrc = member.img ? member.img : `https://graph.facebook.com/${member.fb.split('/').pop()}/picture?type=large`;
+    card.innerHTML = `
+      <img src="${imgSrc}" alt="profile">
+      <h3>${member.name}</h3>
+      <a href="${member.fb}" target="_blank"><i class="fab fa-facebook-f"></i>Facebook</a>
+    `;
+    container.appendChild(card);
+  });
+  section.appendChild(container);
+}
+
+// แสดงเฉพาะกลุ่มถ้ามี query
+if(selectedCard && membersData[selectedCard]){
+  renderGroup(selectedCard, membersData[selectedCard]);
+}else{
+  for(let group in membersData){
+    renderGroup(group, membersData[group]);
+  }
+}
 </script>
 
 </body>
