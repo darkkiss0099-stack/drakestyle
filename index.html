@@ -1,223 +1,198 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DRAKESTYLE</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DRAKESTYLE</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #000;
-      color: #fff;
-      min-height: 100vh;
-      text-align: center;
-    }
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #000;
+  color: #fff;
+  text-align: center;
+}
 
-    header {
-      padding: 40px 20px;
-      border-bottom: 1px solid #222;
-    }
+/* ===== HEADER ===== */
+header {
+  padding: 40px 20px;
+  border-bottom: 1px solid #222;
+}
 
-    header h1 {
-      font-size: 48px;
-      letter-spacing: 4px;
-    }
+header h1 {
+  font-size: 48px;
+  letter-spacing: 4px;
+}
 
-    header p {
-      margin-top: 10px;
-      color: #aaa;
-    }
+header p {
+  margin-top: 10px;
+  color: #aaa;
+}
 
-    nav {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      padding: 20px;
-      border-bottom: 1px solid #222;
-    }
+/* ===== NAV ===== */
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 20px;
+  border-bottom: 1px solid #222;
+}
 
-    nav a {
-      color: #fff;
-      text-decoration: none;
-      position: relative;
-    }
+nav a {
+  color: #fff;
+  text-decoration: none;
+}
 
-    nav a::after {
-      content: "";
-      position: absolute;
-      width: 0;
-      height: 2px;
-      left: 0;
-      bottom: -5px;
-      background: #fff;
-      transition: 0.3s;
-    }
+/* ===== HERO ===== */
+.hero {
+  padding: 80px 20px;
+}
 
-    nav a:hover::after {
-      width: 100%;
-    }
+/* HOUSE OF DRAKE (กดได้) */
+.hero-link {
+  display: inline-block;
+  text-decoration: none;
+}
 
-    /* ===== HERO ===== */
+.hero-box {
+  padding: 25px 50px;
+  border: 3px solid #fff;
+  border-radius: 20px;
+  transition: 0.3s;
+}
 
-    .hero {
-      padding: 80px 20px;
-    }
+.hero-box h2 {
+  font-size: 36px;
+  letter-spacing: 3px;
+}
 
-    .hero-link {
-      display: inline-block;
-      padding: 20px 45px;
-      border: 5px solid #fff;
-      border-radius: 22px;
-      text-decoration: none;
-      transition: 0.3s;
-    }
+.hero-box:hover {
+  box-shadow:
+    inset 0 0 0 1px #00aaff,
+    0 0 14px rgba(0,170,255,0.5);
+  background: rgba(0,170,255,0.06);
+}
 
-    .hero-link h2 {
-      font-size: 36px;
-      color: #fff;
-      letter-spacing: 2px;
-    }
+/* ===== SECTION ===== */
+.section {
+  padding: 60px 20px;
+  border-top: 1px solid #222;
+}
 
-    .hero-link:hover {
-      border-color: #00aaff;
-      box-shadow: 0 0 16px rgba(0, 170, 255, 0.6);
-      background: rgba(0, 170, 255, 0.08);
-    }
+.section h3 {
+  font-size: 28px;
+  margin-bottom: 40px;
+}
 
-    .hero p {
-      margin-top: 15px;
-      color: #bbb;
-    }
+/* ===== CARD ===== */
+.cards {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
 
-    /* ===== SECTION ===== */
+.card-link {
+  text-decoration: none;
+  color: inherit;
+}
 
-    .section {
-      padding: 60px 20px;
-      border-top: 1px solid #222;
-    }
+.card {
+  width: 260px;
+  padding: 25px;
+  background: #111;
+  border: 3px solid #fff;       /* ขอบขาว 3px */
+  border-radius: 18px;          /* มน */
+  transition: 0.3s;
+}
 
-    .section h3 {
-      font-size: 28px;
-      margin-bottom: 40px;
-    }
+.card h2 {
+  color: #fff;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
 
-    /* ===== CARDS ===== */
+.card p {
+  color: #fff;
+  font-size: 14px;
+}
 
-    .cards {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      flex-wrap: wrap;
-    }
+/* hover เอฟเฟกต์ */
+.card:hover {
+  box-shadow:
+    inset 0 0 0 1px #00aaff,     /* ขอบฟ้า 1px ด้านใน */
+    0 0 14px rgba(0,170,255,0.5);
+  background: rgba(0,170,255,0.06);
+  transform: scale(1.05);
+}
 
-    .card-link {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .card {
-      width: 260px;
-      padding: 25px;
-      background: #111;
-      border: 5px solid #fff;
-      border-radius: 18px;
-      transition: 0.3s;
-      cursor: pointer;
-    }
-
-    .card h2 {
-      color: #fff;
-      margin-bottom: 8px;
-      letter-spacing: 2px;
-    }
-
-    .card p {
-      color: #ccc;
-      font-size: 14px;
-    }
-
-    /* ===== เอฟเฟกต์เรืองแสง ===== */
-    .card:hover {
-      border-color: #00aaff;
-      box-shadow: 0 0 16px rgba(0, 170, 255, 0.6);
-      background: rgba(0, 170, 255, 0.08);
-      transform: scale(1.05);
-    }
-
-    .card:hover h2,
-    .card:hover p {
-      color: #fff;
-    }
-
-    footer {
-      margin-top: 60px;
-      padding: 30px;
-      border-top: 1px solid #222;
-      color: #aaa;
-      font-size: 14px;
-    }
-  </style>
+/* ===== FOOTER ===== */
+footer {
+  margin-top: 60px;
+  padding: 30px;
+  border-top: 1px solid #222;
+  font-size: 14px;
+}
+</style>
 </head>
 
 <body>
 
-  <header>
-    <h1>DRAKESTYLE</h1>
-    <p>BET WEAPON NEVER LOSE</p>
-  </header>
+<header>
+  <h1>DRAKESTYLE</h1>
+  <p>BET WEAPON NEVER LOSE</p>
+</header>
 
-  <nav>
-    <a href="#">HOME</a>
-    <a href="#">ABOUT</a>
-    <a href="#">CONTACT</a>
-  </nav>
+<nav>
+  <a href="#">HOME</a>
+  <a href="#">ABOUT</a>
+  <a href="#">CONTACT</a>
+</nav>
 
-  <section class="hero">
-    <a href="list.html" class="hero-link">
+<section class="hero">
+  <a href="house.html" class="hero-link">
+    <div class="hero-box">
       <h2>HOUSE OF DRAKE</h2>
-    </a>
-    <p>WELCOME TO DRAKE</p>
-  </section>
-
-  <section class="section">
-    <h3>CHECK LISTNAME</h3>
-
-    <div class="cards">
-
-      <a href="list.html" class="card-link">
-        <div class="card">
-          <h2>COMING SOON</h2>
-          <p>MEMBER</p>
-        </div>
-      </a>
-
-      <a href="list.html" class="card-link">
-        <div class="card">
-          <h2>DRAKESTYLE</h2>
-          <p>LEADER</p>
-        </div>
-      </a>
-
-      <a href="list.html" class="card-link">
-        <div class="card">
-          <h2>TESTE'D</h2>
-          <p>MEMBER</p>
-        </div>
-      </a>
-
     </div>
-  </section>
+  </a>
+</section>
 
-  <footer>
-    © 2026 DRAKE | DESIGNED BY CRYNET
-  </footer>
+<section class="section">
+  <h3>CHECK LISTNAME</h3>
+
+  <div class="cards">
+    <a href="list.html" class="card-link">
+      <div class="card">
+        <h2>COMING SOON</h2>
+        <p>MEMBER</p>
+      </div>
+    </a>
+
+    <a href="list.html" class="card-link">
+      <div class="card">
+        <h2>DRAKESTYLE</h2>
+        <p>LEADER</p>
+      </div>
+    </a>
+
+    <a href="list.html" class="card-link">
+      <div class="card">
+        <h2>TESTED</h2>
+        <p>MEMBER</p>
+      </div>
+    </a>
+  </div>
+</section>
+
+<footer>
+  © 2026 DRAKE | DESIGNED BY CRYNET
+</footer>
 
 </body>
 </html>
