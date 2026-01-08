@@ -4,43 +4,161 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DRAKESTYLE</title>
+
 <style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:Arial, Helvetica, sans-serif;text-align:center;}
-header{padding:40px 20px;border-bottom:1px solid #222;}
-header h1{font-size:48px;letter-spacing:4px;}
-header p{margin-top:10px;color:#aaa;}
-nav{display:flex;justify-content:center;gap:30px;padding:20px;border-bottom:1px solid #222;}
-nav a{color:#000;text-decoration:none;color:#fff;}
-.hero{padding:80px 20px;}
-.hero-box{display:inline-block;padding:25px 50px;border:3px solid #fff;border-radius:20px;transition:0.3s;}
-.hero-box:hover{box-shadow:inset 0 0 0 1px #00aaff,0 0 14px rgba(0,170,255,0.5);background:rgba(0,170,255,0.06);}
-.section{padding:60px 20px;border-top:1px solid #222;}
-.section h3{font-size:28px;margin-bottom:40px;}
-.cards{display:flex;justify-content:center;gap:30px;flex-wrap:wrap;}
-.card-link{text-decoration:none;color:inherit;}
-.card{width:260px;padding:25px;background:#111;border:3px solid #fff;border-radius:18px;transition:0.3s;text-align:center;}
-.card:hover{box-shadow:inset 0 0 0 1px #00aaff,0 0 14px rgba(0,170,255,0.5);background:rgba(0,170,255,0.06);transform:scale(1.05);}
-footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #000;
+  color: #fff;
+  text-align: center;
+}
+
+/* ===== HEADER ===== */
+header {
+  padding: 40px 20px;
+  border-bottom: 1px solid #222;
+}
+
+header h1 {
+  font-size: 48px;
+  letter-spacing: 4px;
+}
+
+header p {
+  margin-top: 10px;
+  color: #aaa;
+}
+
+/* ===== NAV ===== */
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 20px;
+  border-bottom: 1px solid #222;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+}
+
+/* ===== HERO ===== */
+.hero {
+  padding: 80px 20px;
+}
+
+.hero-link {
+  text-decoration: none;
+}
+
+.hero-box {
+  display: inline-block;
+  padding: 25px 50px;
+  border: 3px solid #fff;
+  border-radius: 20px;
+  transition: 0.3s;
+}
+
+.hero-box h2 {
+  font-size: 36px;
+  letter-spacing: 3px;
+  color: #fff;
+}
+
+.hero-box:hover {
+  box-shadow:
+    inset 0 0 0 1px #00aaff,
+    0 0 14px rgba(0,170,255,0.5);
+  background: rgba(0,170,255,0.06);
+}
+
+/* ===== SECTION ===== */
+.section {
+  padding: 60px 20px;
+  border-top: 1px solid #222;
+}
+
+.section h3 {
+  font-size: 28px;
+  margin-bottom: 40px;
+}
+
+/* ===== CARDS ===== */
+.cards {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card {
+  width: 260px;
+  padding: 25px;
+  background: #111;
+  border: 3px solid #fff;
+  border-radius: 18px;
+  transition: 0.3s;
+  text-align: center;
+}
+
+.card h2 {
+  color: #fff;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.card p {
+  color: #fff;
+  font-size: 14px;
+}
+
+.card:hover {
+  box-shadow:
+    inset 0 0 0 1px #00aaff,
+    0 0 14px rgba(0,170,255,0.5);
+  background: rgba(0,170,255,0.06);
+  transform: scale(1.05);
+}
+
+/* ===== FOOTER ===== */
+footer {
+  margin-top: 60px;
+  padding: 30px;
+  border-top: 1px solid #222;
+  font-size: 14px;
+}
 </style>
 </head>
+
 <body>
 
 <header>
   <h1>DRAKESTYLE</h1>
   <p>BET WEAPON NEVER LOSE</p>
-  <img id="hero-logo" src="" alt="HERO LOGO" style="width:100px;margin-top:10px;display:none;">
 </header>
 
 <nav>
   <a href="#">HOME</a>
   <a href="#">ABOUT</a>
   <a href="#">CONTACT</a>
+  <!-- แก้ตรงนี้ให้ไป login.html -->
   <a href="login.html">ADMIN LOGIN</a>
 </nav>
 
 <section class="hero">
-  <a href="listname.html?card=comingsoon" class="hero-link">
+  <a href="listname.html" class="hero-link">
     <div class="hero-box">
       <h2>HOUSE OF DRAKE</h2>
     </div>
@@ -49,31 +167,34 @@ footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;}
 
 <section class="section">
   <h3>CHECK LISTNAME</h3>
+
   <div class="cards">
     <a href="listname.html?card=comingsoon" class="card-link">
-      <div class="card"><h2>COMING SOON</h2><p>MEMBER</p></div>
+      <div class="card">
+        <h2>COMING SOON</h2>
+        <p>MEMBER</p>
+      </div>
     </a>
+
     <a href="listname.html?card=drakestyle" class="card-link">
-      <div class="card"><h2>DRAKESTYLE</h2><p>LEADER</p></div>
+      <div class="card">
+        <h2>DRAKESTYLE</h2>
+        <p>LEADER</p>
+      </div>
     </a>
+
     <a href="listname.html?card=tested" class="card-link">
-      <div class="card"><h2>TESTE'D</h2><p>MEMBER</p></div>
+      <div class="card">
+        <h2>TESTE'D</h2>
+        <p>MEMBER</p>
+      </div>
     </a>
   </div>
 </section>
 
-<footer>© 2026 DRAKE | DESIGNED BY CRYNET</footer>
-
-<script>
-// โหลด HERO LOGO จาก localStorage
-let stored = JSON.parse(localStorage.getItem('membersData')) || {};
-let heroLogo = stored.hero || '';
-if(heroLogo){ 
-  const heroImg = document.getElementById('hero-logo');
-  heroImg.src = heroLogo;
-  heroImg.style.display='block';
-}
-</script>
+<footer>
+  © 2026 DRAKE | DESIGNED BY CRYNET
+</footer>
 
 </body>
 </html>
