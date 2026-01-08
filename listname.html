@@ -44,12 +44,12 @@ footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;}
 </footer>
 
 <script>
-// กำหนดตัวแปร
+// ดึงค่าการ์ดจาก URL
 const urlParams = new URLSearchParams(window.location.search);
 const card = urlParams.get('card');
 const listBox = document.getElementById('list-box');
 
-// ข้อมูลสมาชิกเริ่มต้น (default)
+// ข้อมูลสมาชิก default หรือจาก localStorage
 let membersData = JSON.parse(localStorage.getItem('members')) || {
   comingsoon:[
     {name:'COMING SOON 1', fb:'https://facebook.com/comingsoon1'},
@@ -63,7 +63,7 @@ let membersData = JSON.parse(localStorage.getItem('members')) || {
   ]
 };
 
-// ฟังก์ชันแสดงสมาชิก
+// แสดงสมาชิก
 function renderMembers(){
   listBox.innerHTML='';
   const members = membersData[card] || [{name:'ไม่มีสมาชิก', fb:'#'}];
@@ -72,15 +72,13 @@ function renderMembers(){
     div.className='list-item';
     div.innerHTML=`
       <span>${member.name}</span>
-      <span>
-        <a href="${member.fb}" target="_blank">Facebook</a>
-      </span>
+      <span><a href="${member.fb}" target="_blank">Facebook</a></span>
     `;
     listBox.appendChild(div);
   });
 }
 
-// ฟังก์ชัน ADMIN LOGIN
+// ADMIN LOGIN
 function adminLogin(){
   const password = prompt("กรุณาใส่รหัส ADMIN:");
   if(password === "1234"){ // <-- เปลี่ยนรหัสที่นี่
@@ -90,7 +88,7 @@ function adminLogin(){
   }
 }
 
-// ฟังก์ชันเปิดโหมดแก้ไข
+// เปิดโหมดแก้ไข
 function enableAdmin(){
   listBox.innerHTML='';
   const members = membersData[card] || [];
@@ -146,7 +144,7 @@ function addMember(){
   }
 }
 
-// แสดงสมาชิกตอนเปิดหน้า
+// แสดงสมาชิกตอนโหลดหน้า
 renderMembers();
 </script>
 
