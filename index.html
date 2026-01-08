@@ -17,7 +17,7 @@ nav a { color:#fff; text-decoration:none; }
 .hero-link { text-decoration:none; }
 .hero-box { display:inline-block; padding:25px 50px; border:3px solid #fff; border-radius:20px; transition:0.3s; }
 .hero-box h2 { font-size:36px; letter-spacing:3px; color:#fff; }
-.hero-box:hover { box-shadow: inset 0 0 0 1px #00aaff, 0 0 14px rgba(0,170,255,0.5); background: rgba(0,170,255,0.06);}
+.hero-box:hover { box-shadow: inset 0 0 0 1px #00aaff, 0 0 14px rgba(0,170,255,0.5); background: rgba(0,170,255,0.06); }
 .section { padding:60px 20px; border-top:1px solid #222; }
 .section h3 { font-size:28px; margin-bottom:40px; }
 .cards { display:flex; justify-content:center; gap:30px; flex-wrap:wrap; }
@@ -25,8 +25,11 @@ nav a { color:#fff; text-decoration:none; }
 .card { width:260px; padding:25px; background:#111; border:3px solid #fff; border-radius:18px; transition:0.3s; }
 .card h2 { color:#fff; letter-spacing:2px; margin-bottom:8px; text-align:center; }
 .card p { color:#fff; font-size:14px; }
-.card:hover { box-shadow: inset 0 0 0 1px #00aaff, 0 0 14px rgba(0,170,255,0.5); background: rgba(0,170,255,0.06); transform:scale(1.05);}
+.card:hover { box-shadow: inset 0 0 0 1px #00aaff, 0 0 14px rgba(0,170,255,0.5); background: rgba(0,170,255,0.06); transform:scale(1.05); }
 footer { margin-top:60px; padding:30px; border-top:1px solid #222; font-size:14px; }
+
+/* รูป HERO LOGO */
+#hero-logo { width:120px; margin-top:20px; border-radius:10px; }
 </style>
 </head>
 <body>
@@ -34,6 +37,8 @@ footer { margin-top:60px; padding:30px; border-top:1px solid #222; font-size:14p
 <header>
   <h1>DRAKESTYLE</h1>
   <p>BET WEAPON NEVER LOSE</p>
+  <img id="hero-logo" src="" alt="HERO LOGO">
+  <br>
   <a href="index.html" class="back-btn">← BACK TO HOME</a>
 </header>
 
@@ -53,20 +58,44 @@ footer { margin-top:60px; padding:30px; border-top:1px solid #222; font-size:14p
 
 <section class="section">
   <h3>CHECK LISTNAME</h3>
-  <div class="cards">
-    <a href="listname.html?card=comingsoon" class="card-link">
-      <div class="card"><h2>COMING SOON</h2><p>MEMBER</p></div>
-    </a>
-    <a href="listname.html?card=drakestyle" class="card-link">
-      <div class="card"><h2>DRAKESTYLE</h2><p>LEADER</p></div>
-    </a>
-    <a href="listname.html?card=tested" class="card-link">
-      <div class="card"><h2>TESTE'D</h2><p>MEMBER</p></div>
-    </a>
+  <div class="cards" id="cards-container">
+    <!-- การ์ดจะโหลดจาก JS -->
   </div>
 </section>
 
 <footer>© 2026 DRAKE | DESIGNED BY CRYNET</footer>
+
+<script>
+// โหลดข้อมูลจาก localStorage
+let stored = JSON.parse(localStorage.getItem('membersData')) || {};
+let membersData = stored.members || {
+  comingsoon:[{name:'COMING SOON', fb:'https://facebook.com/comingsoon', img:''}],
+  drakestyle:[{name:'DRAKESTYLE', fb:'https://facebook.com/drakestyle', img:''}],
+  tested:[{name:"TESTE'D", fb:'https://facebook.com/tested', img:''}]
+};
+let heroLogo = stored.hero || '';
+document.getElementById('hero-logo').src = heroLogo;
+
+// สร้างการ์ดแบบ dynamic
+const cardsContainer = document.getElementById('cards-container');
+function renderCards(){
+  cardsContainer.innerHTML = '';
+  for(let group in membersData){
+    let cardLink = document.createElement('a');
+    cardLink.href = `listname.html?card=${group}`;
+    cardLink.className = 'card-link';
+
+    let cardDiv = document.createElement('div');
+    cardDiv.className = 'card';
+    let memberType = group.toLowerCase()==='drakestyle' ? 'LEADER' : 'MEMBER';
+    cardDiv.innerHTML = `<h2>${group.toUpperCase()}</h2><p>${memberType}</p>`;
+
+    cardLink.appendChild(cardDiv);
+    cardsContainer.appendChild(cardLink);
+  }
+}
+renderCards();
+</script>
 
 </body>
 </html>
