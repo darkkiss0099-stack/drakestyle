@@ -1,30 +1,36 @@
-k<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="th">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DRAKESTYLE</title>
+
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
       font-family: Arial, Helvetica, sans-serif;
       background: #000;
       color: #fff;
       min-height: 100vh;
+      text-align: center;
     }
+
     header {
       padding: 40px 20px;
-      text-align: center;
       border-bottom: 1px solid #222;
     }
+
     header h1 {
       font-size: 48px;
       letter-spacing: 4px;
     }
+
     header p {
       margin-top: 10px;
       color: #aaa;
     }
+
     nav {
       display: flex;
       justify-content: center;
@@ -32,12 +38,13 @@ k<!DOCTYPE html>
       padding: 20px;
       border-bottom: 1px solid #222;
     }
+
     nav a {
       color: #fff;
       text-decoration: none;
-      font-size: 16px;
       position: relative;
     }
+
     nav a::after {
       content: "";
       position: absolute;
@@ -48,53 +55,80 @@ k<!DOCTYPE html>
       background: #fff;
       transition: 0.3s;
     }
+
     nav a:hover::after {
       width: 100%;
     }
+
     .hero {
-      padding: 100px 20px;
-      text-align: center;
+      padding: 80px 20px;
     }
+
     .hero h2 {
       font-size: 36px;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
+
     .hero p {
       color: #bbb;
-      max-width: 600px;
-      margin: auto;
-      line-height: 1.6;
     }
+
     .section {
-      padding: 80px 20px;
+      padding: 60px 20px;
       border-top: 1px solid #222;
-      text-align: center;
     }
+
     .section h3 {
       font-size: 28px;
-      margin-bottom: 20px;
+      margin-bottom: 40px;
     }
+
+    /* ====== CARD ====== */
+
     .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      max-width: 1000px;
-      margin: auto;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
     }
+
+    .card-link {
+      text-decoration: none;
+      color: inherit;
+    }
+
     .card {
+      width: 260px;
+      padding: 25px;
       background: #111;
-      padding: 10px;
-      border: 1px solid #222;
+      border: 1px solid #00aaff;
+      transition: 0.3s;
+      cursor: pointer;
     }
-    .card h4 {
-      margin-bottom: 10px;
+
+    .card h2 {
+      color: #00aaff;
+      margin-bottom: 8px;
+      letter-spacing: 2px;
     }
+
     .card p {
-      color: #aaa;
+      color: #4db8ff;
       font-size: 14px;
     }
+
+    .card:hover {
+      transform: scale(1.05);
+      background: #00aaff;
+    }
+
+    .card:hover h2,
+    .card:hover p {
+      color: #000;
+    }
+
     footer {
-      text-align: center;
+      margin-top: 60px;
       padding: 30px;
       border-top: 1px solid #222;
       color: #666;
@@ -102,6 +136,7 @@ k<!DOCTYPE html>
     }
   </style>
 </head>
+
 <body>
 
   <header>
@@ -117,29 +152,33 @@ k<!DOCTYPE html>
 
   <section class="hero">
     <h2>HOUSE OF DRAKE</h2>
-    <p>
-      WELCOME TO DRAKE
-    </p>
+    <p>WELCOME TO DRAKE</p>
   </section>
 
   <section class="section">
     <h3>CHECK LISTNAME</h3>
-<a href="list.html" class="card-link">
-  <div class="card">
-    <h2>Coming Soon</h2>
-    <p>Member</p>
-  </div>
-<a href="list.html" class="card-link">
-  <div class="card">
-    <h2>DARKESTYLE</h2>
-    <p>LEADER</p>
-  </div>
-<a href="list.html" class="card-link">
-  <div class="card">
-    <h2>TESTE'D</h2>
-    <p>MEMBER</p>
-  </div>
-</a>
+
+    <div class="cards">
+      <a href="list.html" class="card-link">
+        <div class="card">
+          <h2>COMING SOON</h2>
+          <p>MEMBER</p>
+        </div>
+      </a>
+
+      <a href="list.html" class="card-link">
+        <div class="card">
+          <h2>DRAKESTYLE</h2>
+          <p>LEADER</p>
+        </div>
+      </a>
+
+      <a href="list.html" class="card-link">
+        <div class="card">
+          <h2>TESTED</h2>
+          <p>MEMBER</p>
+        </div>
+      </a>
     </div>
   </section>
 
@@ -149,6 +188,8 @@ k<!DOCTYPE html>
 
 </body>
 </html>
+
+
 
 
 
