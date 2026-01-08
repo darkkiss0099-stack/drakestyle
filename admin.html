@@ -34,7 +34,7 @@ h1{color:#00aaff;text-align:center;margin-bottom:20px;}
 
   <!-- HERO LOGO -->
   <div>
-    <label>HERO LOGO URL: </label>
+    <label>เลือกโลโก้/รูปหน้าแรก (HERO): </label>
     <input type="text" id="heroInput" placeholder="ใส่ URL รูป">
     <button onclick="setHeroLogo()">SET HERO LOGO</button>
     <br>
@@ -43,23 +43,24 @@ h1{color:#00aaff;text-align:center;margin-bottom:20px;}
 
   <hr>
 
-  <!-- FONT + Background -->
+  <!-- เปลี่ยน FONT และ Background -->
   <div>
-    <label>พื้นหลัง: </label>
+    <label>เปลี่ยนพื้นหลัง: </label>
     <input type="color" id="bgInput" value="#000000">
-    <label>FONT: </label>
+    <label>เปลี่ยน FONT: </label>
     <input type="text" id="fontInput" placeholder="Arial, Helvetica, sans-serif">
   </div>
 
   <hr>
 
+  <!-- แก้ไขกลุ่มสมาชิก -->
   <div id="groups-container"></div>
 
   <button class="save-btn" onclick="saveAll()">บันทึกการเปลี่ยนแปลง</button>
 </div>
 
 <script>
-// โหลดข้อมูล
+// โหลดข้อมูลจาก localStorage หรือ default
 let stored = JSON.parse(localStorage.getItem('membersData')) || {};
 let membersData = stored.members || {
   comingsoon:[{name:'COMING SOON', fb:'https://facebook.com/comingsoon', img:''}],
@@ -70,28 +71,30 @@ let heroLogo = stored.hero || '';
 let bgColor = stored.bg || '#000';
 let fontFamily = stored.font || 'Arial, Helvetica, sans-serif';
 
-// แสดง HERO + ฟอนต์ + BG
-document.getElementById('hero-logo').src = heroLogo;
+// แสดง HERO LOGO และตั้งค่า FONT+BG
+const heroImg = document.getElementById('hero-logo');
+heroImg.src = heroLogo;
 document.body.style.backgroundColor = bgColor;
 document.body.style.fontFamily = fontFamily;
 
 function setHeroLogo(){
   heroLogo = document.getElementById('heroInput').value.trim();
-  document.getElementById('hero-logo').src = heroLogo;
+  heroImg.src = heroLogo;
 }
 
+// สร้าง UI แก้ไขสมาชิก + เปลี่ยนชื่อกลุ่ม
 const groupsContainer = document.getElementById('groups-container');
 
 function renderGroups(){
-  groupsContainer.innerHTML='';
+  groupsContainer.innerHTML = '';
   for(let group in membersData){
     const groupDiv = document.createElement('div');
-    groupDiv.className='group-section';
+    groupDiv.className = 'group-section';
     groupDiv.innerHTML = `<h2><input type="text" class="group-name-input" value="${group.toUpperCase()}"></h2>`;
-    
+
     membersData[group].forEach((member,index)=>{
       const memberDiv = document.createElement('div');
-      memberDiv.className='member-item';
+      memberDiv.className = 'member-item';
       memberDiv.innerHTML = `
         <img src="${member.img || 'https://graph.facebook.com/'+member.fb.split('/').pop()+'/picture?type=large'}" alt="profile">
         <input type="text" value="${member.name}" placeholder="Name" class="name-input">
@@ -103,7 +106,7 @@ function renderGroups(){
     });
 
     const addDiv = document.createElement('div');
-    addDiv.className='add-member';
+    addDiv.className = 'add-member';
     addDiv.innerHTML = `
       <input type="text" placeholder="Name" class="new-name">
       <input type="text" placeholder="Facebook Link" class="new-fb">
@@ -129,7 +132,7 @@ function addMember(group){
   if(name && fb){
     membersData[group].push({name,fb,img});
     renderGroups();
-  } else { alert('กรุณากรอก Name และ Facebook Link'); }
+  } else alert('กรุณากรอก Name และ Facebook Link');
 }
 
 function saveAll(){
@@ -137,7 +140,10 @@ function saveAll(){
     const oldGroupName = Object.keys(membersData)[gi];
     const newGroupNameInput = groupDiv.querySelector('.group-name-input').value.trim();
     const newGroupName = newGroupNameInput ? newGroupNameInput.toLowerCase().replace(/\s/g,'') : oldGroupName;
-    if(newGroupName !== oldGroupName){ membersData[newGroupName]=membersData[oldGroupName]; delete membersData[oldGroupName]; }
+    if(newGroupName !== oldGroupName){
+      membersData[newGroupName] = membersData[oldGroupName];
+      delete membersData[oldGroupName];
+    }
     membersData[newGroupName].forEach((member,mi)=>{
       const itemDiv = groupDiv.querySelectorAll('.member-item')[mi];
       member.name = itemDiv.querySelector('.name-input').value.trim();
@@ -145,13 +151,22 @@ function saveAll(){
       member.img = itemDiv.querySelector('.img-input').value.trim();
     });
   });
+
   const bgColorInput = document.getElementById('bgInput').value;
   const fontInput = document.getElementById('fontInput').value.trim() || 'Arial, Helvetica, sans-serif';
-  localStorage.setItem('membersData', JSON.stringify({members:membersData, hero:heroLogo, bg:bgColorInput, font:fontInput}));
+
+  localStorage.setItem('membersData', JSON.stringify({
+    members: membersData,
+    hero: heroLogo,
+    bg: bgColorInput,
+    font: fontInput
+  }));
+
   alert('บันทึกเรียบร้อย! รีหน้า index.html หรือ listname.html จะเห็นผลทันที');
 }
 
 renderGroups();
 </script>
+
 </body>
 </html>
