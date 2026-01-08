@@ -29,9 +29,7 @@ function login(){
   const password = document.getElementById('pass').value.trim();
   const error = document.getElementById('error');
 
-  // รหัส ADMIN
   if(username==='ADMIN' && password==='drakestyle588'){
-    // ใช้ localStorage เพื่อบันทึก login
     localStorage.setItem('loggedIn','true');
     window.location.href='admin.html';
   } else {
