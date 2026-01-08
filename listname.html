@@ -38,19 +38,23 @@ footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;tex
 <footer>© 2026 DRAKE | DESIGNED BY CRYNET</footer>
 
 <script>
+// อ่าน URL ?card= สำหรับกรองกลุ่ม
 const urlParams = new URLSearchParams(window.location.search);
 const selectedCard = urlParams.get('card');
 
-let stored = JSON.parse(localStorage.getItem('membersData'));
-let membersData = stored ? stored.members : {
+// โหลดข้อมูลจาก localStorage หรือใช้ค่าตั้งต้น
+let stored = JSON.parse(localStorage.getItem('membersData')) || {};
+let membersData = stored.members || {
   comingsoon:[{name:'COMING SOON 1', fb:'https://facebook.com/comingsoon1', img:''}],
   drakestyle:[{name:'DRAKESTYLE', fb:'https://facebook.com/drakestyle', img:''}],
   tested:[{name:"TESTE'D 1", fb:'https://facebook.com/tested1', img:''}]
 };
-let fontFamily = stored && stored.font ? stored.font : 'Arial, Helvetica, sans-serif';
-let bgColor = stored && stored.bg ? stored.bg : '#000';
-let logoURL = stored && stored.logo ? stored.logo : '';
-let showLogo = stored && stored.showLogo ? stored.showLogo : 'no';
+
+// โหลด font, bg, logo
+let fontFamily = stored.font || 'Arial, Helvetica, sans-serif';
+let bgColor = stored.bg || '#000';
+let logoURL = stored.logo || '';
+let showLogo = stored.showLogo || 'no';
 
 document.body.style.fontFamily = fontFamily;
 document.body.style.backgroundColor = bgColor;
@@ -63,7 +67,9 @@ if(showLogo==='yes' && logoURL){
 
 const section = document.getElementById('members-section');
 
+// ฟังก์ชัน render สมาชิกเป็นกลุ่ม
 function renderGroup(groupName, members){
+  if(!members || members.length===0) return;
   const title = document.createElement('div');
   title.className='group-title';
   title.textContent = groupName.toUpperCase();
@@ -74,7 +80,8 @@ function renderGroup(groupName, members){
   members.forEach(member=>{
     const card = document.createElement('div');
     card.className='member-card';
-    let imgSrc = member.img ? member.img : `https://graph.facebook.com/${member.fb.split('/').pop()}/picture?type=large`;
+    // ถ้าไม่มีรูป ใช้ Facebook profile pic
+    let imgSrc = member.img && member.img.trim() !== '' ? member.img : `https://graph.facebook.com/${member.fb.split('/').pop()}/picture?type=large`;
     card.innerHTML = `
       <img src="${imgSrc}" alt="profile">
       <h3>${member.name}</h3>
@@ -85,9 +92,11 @@ function renderGroup(groupName, members){
   section.appendChild(container);
 }
 
+// ถ้ามี ?card= จะกรองกลุ่มนั้น
 if(selectedCard && membersData[selectedCard]){
   renderGroup(selectedCard, membersData[selectedCard]);
 }else{
+  // แสดงทุกกลุ่ม
   for(let group in membersData){
     renderGroup(group, membersData[group]);
   }
