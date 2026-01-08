@@ -42,43 +42,24 @@ footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;}
 
 <section class="hero">
   <a href="listname.html?card=comingsoon" class="hero-link">
-    <div class="hero-box">
-      <h2>HOUSE OF DRAKE</h2>
-    </div>
+    <div class="hero-box"><h2>HOUSE OF DRAKE</h2></div>
   </a>
 </section>
 
 <section class="section">
   <h3>CHECK LISTNAME</h3>
   <div class="cards">
-    <a href="listname.html?card=comingsoon" class="card-link">
-      <div class="card"><h2>COMING SOON</h2><p>MEMBER</p></div>
-    </a>
-    <a href="listname.html?card=drakestyle" class="card-link">
-      <div class="card"><h2>DRAKESTYLE</h2><p>LEADER</p></div>
-    </a>
-    <a href="listname.html?card=tested" class="card-link">
-      <div class="card"><h2>TESTE'D</h2><p>MEMBER</p></div>
-    </a>
+    <a href="listname.html?card=comingsoon" class="card-link"><div class="card"><h2>COMING SOON</h2><p>MEMBER</p></div></a>
+    <a href="listname.html?card=drakestyle" class="card-link"><div class="card"><h2>DRAKESTYLE</h2><p>LEADER</p></div></a>
+    <a href="listname.html?card=tested" class="card-link"><div class="card"><h2>TESTE'D</h2><p>MEMBER</p></div></a>
   </div>
 </section>
 
 <footer>© 2026 DRAKE | DESIGNED BY CRYNET</footer>
 
 <script>
-// โหลดสีพื้นหลัง ฟอนต์ HERO จาก localStorage
 let stored = JSON.parse(localStorage.getItem('membersData')) || {};
 document.body.style.backgroundColor = stored.bg || '#000';
 document.body.style.fontFamily = stored.font || 'Arial, Helvetica, sans-serif';
-
-// HERO LOGO
 let heroLogo = stored.hero || '';
-if(heroLogo){ 
-  const heroImg = document.getElementById('hero-logo');
-  heroImg.src = heroLogo;
-  heroImg.style.display='block';
-}
-</script>
-
-</body>
-</html>
+if(heroLogo){ const heroImg=document.getElementById('hero-logo'); heroImg.src=
