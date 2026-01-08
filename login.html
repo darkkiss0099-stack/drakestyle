@@ -3,92 +3,128 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ADMIN LOGIN | DRAKESTYLE</title>
+<title>ADMIN PANEL | DRAKESTYLE</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <style>
-body{
-  margin:0;
-  padding:0;
-  background:#000;
-  font-family:Arial, Helvetica, sans-serif;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-  color:#fff;
-}
-.login-box{
-  background:#111;
-  padding:40px;
-  border-radius:15px;
-  border:2px solid #00aaff;
-  width:300px;
-  text-align:center;
-}
-.login-box h2{
-  margin-bottom:30px;
-  letter-spacing:2px;
-  color:#00aaff;
-}
-.login-box input{
-  width:100%;
-  padding:10px;
-  margin:10px 0;
-  border:none;
-  border-radius:5px;
-}
-.login-box button{
-  width:100%;
-  padding:10px;
-  margin-top:15px;
-  border:none;
-  border-radius:5px;
-  background:#00aaff;
-  color:#fff;
-  font-weight:bold;
-  cursor:pointer;
-}
-.login-box button:hover{
-  background:#0088cc;
-}
-.error{
-  color:red;
-  font-size:14px;
-  margin-top:10px;
-}
+body{margin:0;padding:0;font-family:Arial;background:#000;color:#fff;}
+.container{padding:20px;}
+h1{color:#00aaff;text-align:center;margin-bottom:20px;}
+.group-section{margin-bottom:30px;border:1px solid #222;padding:15px;border-radius:10px;}
+.group-section h2 input{background:none;border:none;color:#fff;font-size:18px;font-weight:bold;width:80%;}
+.member-item{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.member-item input{padding:5px;border-radius:5px;border:none;}
+.member-item img{width:40px;height:40px;border-radius:50%;}
+.member-item button{padding:5px 10px;border:none;border-radius:5px;background:#00aaff;color:#fff;cursor:pointer;}
+.member-item button:hover{background:#0088cc;}
+.add-member{margin-top:10px;}
+.add-member input{padding:5px;border-radius:5px;border:none;margin-right:5px;}
+.add-member button{padding:5px 10px;background:#00aaff;color:#fff;border:none;border-radius:5px;cursor:pointer;}
+.add-member button:hover{background:#0088cc;}
+#hero-logo{width:100px;margin:20px 0;}
+.save-btn{margin-top:20px;padding:10px 20px;background:#00aaff;border:none;border-radius:5px;color:#fff;font-weight:bold;cursor:pointer;}
+.save-btn:hover{background:#0088cc;}
 </style>
 </head>
 <body>
-<div class="login-box">
-  <h2>ADMIN LOGIN</h2>
-  <input type="text" id="email" placeholder="Email">
-  <input type="password" id="password" placeholder="Password">
-  <button onclick="login()">LOGIN</button>
-  <div class="error" id="error"></div>
+<div class="container">
+  <h1>ADMIN PANEL | DRAKESTYLE</h1>
+
+  <div>
+    <label>เลือกโลโก้/รูปหน้าแรก (HERO): </label>
+    <input type="text" id="heroInput" placeholder="ใส่ URL รูป">
+    <button onclick="setHeroLogo()">SET HERO LOGO</button>
+    <br>
+    <img id="hero-logo" src="" alt="HERO LOGO">
+  </div>
+
+  <hr>
+
+  <div>
+    <label>เปลี่ยนพื้นหลัง: </label>
+    <input type="color" id="bgInput" value="#000000">
+    <label>เปลี่ยน FONT: </label>
+    <input type="text" id="fontInput" placeholder="Arial, Helvetica, sans-serif">
+  </div>
+
+  <hr>
+
+  <div id="groups-container"></div>
+
+  <button class="save-btn" onclick="saveAll()">บันทึกการเปลี่ยนแปลง</button>
 </div>
 
 <script>
-const correctEmail = 'drakestan2026';
-const correctPassword = 'drakestyle588';
+let stored = JSON.parse(localStorage.getItem('membersData')) || {};
+let membersData = stored.members || {
+  comingsoon:[{name:'COMING SOON', fb:'https://facebook.com/comingsoon', img:''}],
+  drakestyle:[{name:'DRAKESTYLE', fb:'https://facebook.com/drakestyle', img:''}],
+  tested:[{name:"TESTE'D", fb:'https://facebook.com/tested', img:''}]
+};
+let heroLogo = stored.hero || '';
+let bgColor = stored.bg || '#000';
+let fontFamily = stored.font || 'Arial, Helvetica, sans-serif';
 
-function login() {
-  const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value.trim();
-  const errorDiv = document.getElementById('error');
+document.getElementById('hero-logo').src = heroLogo;
+document.body.style.backgroundColor = bgColor;
+document.body.style.fontFamily = fontFamily;
 
-  if(email === correctEmail && password === correctPassword){
-    window.location.href = 'admin.html';
-  } else {
-    errorDiv.textContent = 'Email หรือ Password ไม่ถูกต้อง';
+function setHeroLogo(){ heroLogo = document.getElementById('heroInput').value.trim(); document.getElementById('hero-logo').src=heroLogo; }
+
+const groupsContainer = document.getElementById('groups-container');
+
+function renderGroups(){
+  groupsContainer.innerHTML='';
+  for(let group in membersData){
+    const div=document.createElement('div');
+    div.className='group-section';
+    div.innerHTML=`<h2><input type="text" class="group-name-input" value="${group.toUpperCase()}"></h2>`;
+    membersData[group].forEach((member,index)=>{
+      const memberDiv=document.createElement('div');
+      memberDiv.className='member-item';
+      memberDiv.innerHTML=`<img src="${member.img||'https://graph.facebook.com/'+member.fb.split('/').pop()+'/picture?type=large'}">
+      <input type="text" value="${member.name}" class="name-input">
+      <input type="text" value="${member.fb}" class="fb-input">
+      <input type="text" value="${member.img}" class="img-input">
+      <button onclick="deleteMember('${group}',${index})">ลบ</button>`;
+      div.appendChild(memberDiv);
+    });
+    const addDiv=document.createElement('div');
+    addDiv.className='add-member';
+    addDiv.innerHTML=`<input placeholder="Name" class="new-name"><input placeholder="Facebook Link" class="new-fb"><input placeholder="Profile URL" class="new-img"><button onclick="addMember('${group}')">เพิ่มสมาชิก</button>`;
+    div.appendChild(addDiv);
+    groupsContainer.appendChild(div);
   }
 }
 
-// กด Enter ก็ LOGIN ได้
-document.getElementById('password').addEventListener('keyup', function(e){
-  if(e.key === 'Enter') login();
-});
-document.getElementById('email').addEventListener('keyup', function(e){
-  if(e.key === 'Enter') login();
-});
+function deleteMember(group,index){ membersData[group].splice(index,1); renderGroups(); }
+function addMember(group){
+  const parent=event.target.parentElement;
+  const name=parent.querySelector('.new-name').value.trim();
+  const fb=parent.querySelector('.new-fb').value.trim();
+  const img=parent.querySelector('.new-img').value.trim();
+  if(name && fb){ membersData[group].push({name,fb,img}); renderGroups(); } else alert('กรุณากรอก Name และ Facebook Link');
+}
+
+function saveAll(){
+  document.querySelectorAll('.group-section').forEach((groupDiv,gi)=>{
+    const oldGroupName=Object.keys(membersData)[gi];
+    const newGroupNameInput=groupDiv.querySelector('.group-name-input').value.trim();
+    const newGroupName=newGroupNameInput?newGroupNameInput.toLowerCase().replace(/\s/g,''):oldGroupName;
+    if(newGroupName!==oldGroupName){ membersData[newGroupName]=membersData[oldGroupName]; delete membersData[oldGroupName]; }
+    membersData[newGroupName].forEach((member,mi)=>{
+      const itemDiv=groupDiv.querySelectorAll('.member-item')[mi];
+      member.name=itemDiv.querySelector('.name-input').value.trim();
+      member.fb=itemDiv.querySelector('.fb-input').value.trim();
+      member.img=itemDiv.querySelector('.img-input').value.trim();
+    });
+  });
+  const bg=document.getElementById('bgInput').value;
+  const font=document.getElementById('fontInput').value.trim()||'Arial, Helvetica, sans-serif';
+  localStorage.setItem('membersData',JSON.stringify({members:membersData,hero:heroLogo,bg,bg,font}));
+  alert('บันทึกเรียบร้อย! รีหน้า index.html จะเห็นผลทันที');
+}
+
+renderGroups();
 </script>
 </body>
 </html>
