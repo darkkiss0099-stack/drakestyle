@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LISTNAME | DRAKESTYLE</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-<style id="dynamic-style">
+<style>
 body{margin:0;padding:0;background:#000;color:#fff;font-family:Arial, Helvetica, sans-serif;}
 header{padding:40px 20px;border-bottom:1px solid #222;text-align:center;}
 header h1{font-size:42px;letter-spacing:4px;}
@@ -21,6 +21,7 @@ header p{color:#aaa;margin-top:10px;}
 .member-card a{color:#fff;text-decoration:none;font-weight:bold;display:flex;align-items:center;justify-content:center;}
 .member-card a i{margin-right:6px;}
 footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;text-align:center;}
+#site-logo{width:80px;margin-top:10px;display:none;}
 </style>
 </head>
 <body>
@@ -28,7 +29,7 @@ footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;tex
 <header>
   <h1>LISTNAME</h1>
   <p>DRAKESTYLE MEMBER</p>
-  <img id="site-logo" src="" alt="โลโก้" style="width:80px;display:none;margin-top:10px;">
+  <img id="site-logo" src="" alt="โลโก้">
   <div class="back"><a href="index.html">← BACK TO HOME</a></div>
 </header>
 
@@ -36,4 +37,62 @@ footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;tex
 
 <footer>© 2026 DRAKE | DESIGNED BY CRYNET</footer>
 
-<s
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+const selectedCard = urlParams.get('card');
+
+let stored = JSON.parse(localStorage.getItem('membersData'));
+let membersData = stored ? stored.members : {
+  comingsoon:[{name:'COMING SOON 1', fb:'https://facebook.com/comingsoon1', img:''}],
+  drakestyle:[{name:'DRAKESTYLE', fb:'https://facebook.com/drakestyle', img:''}],
+  tested:[{name:"TESTE'D 1", fb:'https://facebook.com/tested1', img:''}]
+};
+let fontFamily = stored && stored.font ? stored.font : 'Arial, Helvetica, sans-serif';
+let bgColor = stored && stored.bg ? stored.bg : '#000';
+let logoURL = stored && stored.logo ? stored.logo : '';
+let showLogo = stored && stored.showLogo ? stored.showLogo : 'no';
+
+document.body.style.fontFamily = fontFamily;
+document.body.style.backgroundColor = bgColor;
+
+if(showLogo==='yes' && logoURL){
+  let logo = document.getElementById('site-logo');
+  logo.src = logoURL;
+  logo.style.display='block';
+}
+
+const section = document.getElementById('members-section');
+
+function renderGroup(groupName, members){
+  const title = document.createElement('div');
+  title.className='group-title';
+  title.textContent = groupName.toUpperCase();
+  section.appendChild(title);
+
+  const container = document.createElement('div');
+  container.className='cards-container';
+  members.forEach(member=>{
+    const card = document.createElement('div');
+    card.className='member-card';
+    let imgSrc = member.img ? member.img : `https://graph.facebook.com/${member.fb.split('/').pop()}/picture?type=large`;
+    card.innerHTML = `
+      <img src="${imgSrc}" alt="profile">
+      <h3>${member.name}</h3>
+      <a href="${member.fb}" target="_blank"><i class="fab fa-facebook-f"></i>Facebook</a>
+    `;
+    container.appendChild(card);
+  });
+  section.appendChild(container);
+}
+
+if(selectedCard && membersData[selectedCard]){
+  renderGroup(selectedCard, membersData[selectedCard]);
+}else{
+  for(let group in membersData){
+    renderGroup(group, membersData[group]);
+  }
+}
+</script>
+
+</body>
+</html>
