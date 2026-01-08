@@ -4,17 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DRAKESTYLE</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style id="dynamic-style">
+*{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:Arial, Helvetica, sans-serif;background:#000;color:#fff;text-align:center;}
 header{padding:40px 20px;border-bottom:1px solid #222;}
 header h1{font-size:48px;letter-spacing:4px;}
-header p{color:#aaa;margin-top:10px;}
+header p{margin-top:10px;color:#aaa;}
 nav{display:flex;justify-content:center;gap:30px;padding:20px;border-bottom:1px solid #222;}
-nav a{color:#fff;text-decoration:none;padding:5px 10px;border-radius:5px;}
-nav a.admin{color:#fff;background:#00aaff;}
-nav a.admin:hover{background:#0088cc;}
+nav a{color:#fff;text-decoration:none;}
 .hero{padding:80px 20px;}
+.hero-link{text-decoration:none;}
 .hero-box{display:inline-block;padding:25px 50px;border:3px solid #fff;border-radius:20px;transition:0.3s;}
 .hero-box h2{font-size:36px;letter-spacing:3px;color:#fff;}
 .hero-box:hover{box-shadow:inset 0 0 0 1px #00aaff,0 0 14px rgba(0,170,255,0.5);background:rgba(0,170,255,0.06);}
@@ -22,11 +22,12 @@ nav a.admin:hover{background:#0088cc;}
 .section h3{font-size:28px;margin-bottom:40px;}
 .cards{display:flex;justify-content:center;gap:30px;flex-wrap:wrap;}
 .card-link{text-decoration:none;color:inherit;}
-.card{width:260px;padding:25px;background:#111;border:3px solid #fff;border-radius:18px;transition:0.3s;}
+.card{width:260px;padding:25px;background:#111;border:3px solid #fff;border-radius:18px;transition:0.3s;text-align:center;}
 .card h2{color:#fff;letter-spacing:2px;margin-bottom:8px;}
 .card p{color:#fff;font-size:14px;}
 .card:hover{box-shadow:inset 0 0 0 1px #00aaff,0 0 14px rgba(0,170,255,0.5);background:rgba(0,170,255,0.06);transform:scale(1.05);}
-footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;}
+footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;text-align:center;}
+#site-logo{width:80px;margin-top:10px;display:none;}
 </style>
 </head>
 <body>
@@ -34,17 +35,18 @@ footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;}
 <header>
   <h1>DRAKESTYLE</h1>
   <p>BET WEAPON NEVER LOSE</p>
+  <img id="site-logo" src="" alt="โลโก้">
 </header>
 
 <nav>
   <a href="#">HOME</a>
   <a href="#">ABOUT</a>
   <a href="#">CONTACT</a>
-  <a href="login.html" class="admin">ADMIN LOGIN</a>
+  <a href="admin.html">ADMIN LOGIN</a>
 </nav>
 
 <section class="hero">
-  <a href="house.html" class="hero-link">
+  <a href="listname.html" class="hero-link">
     <div class="hero-box">
       <h2>HOUSE OF DRAKE</h2>
     </div>
@@ -53,6 +55,7 @@ footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;}
 
 <section class="section">
   <h3>CHECK LISTNAME</h3>
+
   <div class="cards">
     <a href="listname.html?card=comingsoon" class="card-link">
       <div class="card">
@@ -70,16 +73,27 @@ footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;}
 
     <a href="listname.html?card=tested" class="card-link">
       <div class="card">
-        <h2>TESTED</h2>
+        <h2>TESTE'D</h2>
         <p>MEMBER</p>
       </div>
     </a>
   </div>
 </section>
 
-<footer>
-  © 2026 DRAKE | DESIGNED BY CRYNET
-</footer>
+<footer>© 2026 DRAKE | DESIGNED BY CRYNET</footer>
+
+<script>
+let stored = JSON.parse(localStorage.getItem('membersData'));
+if(stored){
+  document.body.style.fontFamily = stored.font || 'Arial, Helvetica, sans-serif';
+  document.body.style.backgroundColor = stored.bg || '#000';
+  if(stored.showLogo==='yes' && stored.logo){
+    let logo = document.getElementById('site-logo');
+    logo.src = stored.logo;
+    logo.style.display = 'block';
+  }
+}
+</script>
 
 </body>
 </html>
