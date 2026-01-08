@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADMIN PANEL | DRAKESTYLE</title>
+<style>
+body{background:#000;color:#fff;font-family:Arial, Helvetica, sans-serif;text-align:center;padding:50px;}
+input{padding:5px;margin:5px;width:250px;border-radius:5px;border:none;}
+button{padding:5px 10px;border:none;border-radius:5px;background:#00aaff;color:#fff;cursor:pointer;}
+button:hover{background:#0088cc;}
+.member-box{border:2px solid #fff;padding:15px;margin:10px;border-radius:10px;}
+a{color:#00aaff;text-decoration:none;}
+</style>
+</head>
+<body>
+
+<h1>ADMIN PANEL</h1>
+<p>แก้ไขรายชื่อสมาชิกและ Facebook Link</p>
+<div id="members"></div>
+<button onclick="addMember()">เพิ่มสมาชิกใหม่</button><br><br>
+<a href="index.html">กลับหน้าเว็บ</a>
+
+<script>
+let membersData = JSON.parse(localStorage.getItem('members')) || {
+  comingsoon:[{name:'COMING SOON 1', fb:'https://facebook.com/comingsoon1'},{name:'COMING SOON 2', fb:'https://facebook.com/comingsoon2'}],
+  drakestyle:[{name:'DRAKESTYLE', fb:'https://facebook.com/drakestyle'}],
+  tested:[{name:'TESTED 1', fb:'https://facebook.com/tested1'}]
+};
+
+function renderMembers(){
+  const membersDiv = document.getElementById('members');
+  membersDiv.innerHTML = '';
+  for(let card in membersData){
+    const h3 = document.createElement('h3'); h3.textContent = card.toUpperCase();
+    membersDiv.appendChild(h3);
+    membersData[card].forEach((m,i)=>{
+      const div = document.createElement('div'); div.className='member-box';
+      div.innerHTML=`ชื่อ: <input value="${m.name}" id="${card}-name-${i}"><br>
+                     Facebook: <input value="${m.fb}" id="${card}-fb-${i}"><br>
+                     <button onclick="saveMember('${card}',${i})">บันทึก</button>
+                     <button onclick="deleteMember('${card}',${i})">ลบ</button>`;
+      membersDiv.appendChild(div);
+    });
+  }
+}
+
+function saveMember(card,index){
+  const name=document.getElementById(`${card}-name-${index}`).value;
+  const fb=document.getElementById(`${card}-fb-${index}`).value;
+  membersData[card][index]={name,fb};
+  localStorage.setItem('members', JSON.stringify(membersData));
+  alert('บันทึกเรียบร้อย');
+}
+
+function deleteMember(card,index){
+  if(confirm('ต้องการลบสมาชิกนี้?')){
+    membersData[card].splice(index,1);
+    localStorage.setItem('members', JSON.stringify(membersData));
+    renderMembers();
+  }
+}
+
+function addMember(){
+  const card=prompt('ใส่กลุ่มสมาชิก (comingsoon / drakestyle / tested)');
+  if(card && membersData[card]){
+    membersData[card].push({name:'ชื่อใหม่', fb:'#'});
+    localStorage.setItem('members', JSON.stringify(membersData));
+    renderMembers();
+  } else {alert('กลุ่มไม่ถูกต้อง');}
+}
+
+renderMembers();
+</script>
+
+</body>
+</html>
