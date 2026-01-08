@@ -28,6 +28,7 @@ footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;tex
 <header>
   <h1>LISTNAME</h1>
   <p>DRAKESTYLE MEMBER</p>
+  <img id="site-logo" src="" alt="โลโก้" style="width:80px;display:none;margin-top:10px;">
   <div class="back"><a href="index.html">← BACK TO HOME</a></div>
 </header>
 
@@ -35,64 +36,4 @@ footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;tex
 
 <footer>© 2026 DRAKE | DESIGNED BY CRYNET</footer>
 
-<script>
-const urlParams = new URLSearchParams(window.location.search);
-const selectedCard = urlParams.get('card');
-
-// ดึงข้อมูลสมาชิก + font + background จาก localStorage
-let stored = JSON.parse(localStorage.getItem('membersData'));
-let membersData = stored ? stored.members : {
-  comingsoon:[
-    {name:'COMING SOON 1', fb:'https://facebook.com/comingsoon1', img:''},
-    {name:'COMING SOON 2', fb:'https://facebook.com/comingsoon2', img:''}
-  ],
-  drakestyle:[
-    {name:'DRAKESTYLE', fb:'https://facebook.com/drakestyle', img:''}
-  ],
-  tested:[
-    {name:"TESTE'D 1", fb:'https://facebook.com/tested1', img:''}
-  ]
-};
-let fontFamily = stored && stored.font ? stored.font : 'Arial, Helvetica, sans-serif';
-let bgColor = stored && stored.bg ? stored.bg : '#000';
-
-// ปรับ font และ background
-document.body.style.fontFamily = fontFamily;
-document.body.style.backgroundColor = bgColor;
-
-const section = document.getElementById('members-section');
-
-function renderGroup(groupName, members){
-  const title = document.createElement('div');
-  title.className='group-title';
-  title.textContent = groupName.toUpperCase();
-  section.appendChild(title);
-
-  const container = document.createElement('div');
-  container.className='cards-container';
-  members.forEach(member=>{
-    const card = document.createElement('div');
-    card.className='member-card';
-    let imgSrc = member.img ? member.img : `https://graph.facebook.com/${member.fb.split('/').pop()}/picture?type=large`;
-    card.innerHTML = `
-      <img src="${imgSrc}" alt="profile">
-      <h3>${member.name}</h3>
-      <a href="${member.fb}" target="_blank"><i class="fab fa-facebook-f"></i>Facebook</a>
-    `;
-    container.appendChild(card);
-  });
-  section.appendChild(container);
-}
-
-// แสดงกลุ่มเฉพาะหรือทั้งหมด
-if(selectedCard && membersData[selectedCard]){
-  renderGroup(selectedCard, membersData[selectedCard]);
-}else{
-  for(let group in membersData){
-    renderGroup(group, membersData[group]);
-  }
-}
-</script>
-
-</body>
-</html>
+<s
