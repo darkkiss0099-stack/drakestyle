@@ -10,7 +10,7 @@ body{margin:0;padding:0;font-family:Arial, Helvetica, sans-serif;background:#000
 .container{padding:20px;}
 h1{color:#00aaff;text-align:center;margin-bottom:30px;}
 .group-section{margin-bottom:40px;border:1px solid #222;padding:15px;border-radius:10px;}
-.group-section h2{color:#fff;margin-bottom:15px;}
+.group-section h2 input{background:none;border:none;color:#fff;font-size:18px;font-weight:bold;width:80%;}
 .member-item{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
 .member-item input{padding:5px;border-radius:5px;border:none;}
 .member-item img{width:40px;height:40px;border-radius:50%;}
@@ -26,16 +26,27 @@ h1{color:#00aaff;text-align:center;margin-bottom:30px;}
 </style>
 </head>
 <body>
+
 <div class="container">
   <h1>ADMIN PANEL | DRAKESTYLE</h1>
 
-  <!-- รูป HERO / โลโก้ -->
+  <!-- HERO LOGO -->
   <div>
     <label>เลือกโลโก้/รูปหน้าแรก (HERO): </label>
     <input type="text" id="heroInput" placeholder="ใส่ URL รูป">
     <button onclick="setHeroLogo()">SET HERO LOGO</button>
     <br>
     <img id="hero-logo" src="" alt="HERO LOGO">
+  </div>
+
+  <hr>
+
+  <!-- เปลี่ยน FONT และ Background -->
+  <div>
+    <label>เปลี่ยนพื้นหลัง: </label>
+    <input type="color" id="bgInput" value="#000000">
+    <label>เปลี่ยน FONT: </label>
+    <input type="text" id="fontInput" placeholder="Arial, Helvetica, sans-serif">
   </div>
 
   <hr>
@@ -55,19 +66,21 @@ let membersData = stored.members || {
   tested:[{name:"TESTE'D 1", fb:'https://facebook.com/tested1', img:''}]
 };
 let heroLogo = stored.hero || '';
+let bgColor = stored.bg || '#000';
+let fontFamily = stored.font || 'Arial, Helvetica, sans-serif';
 
-// แสดง HERO LOGO
+// แสดง HERO LOGO และตั้งค่า FONT+BG
 const heroImg = document.getElementById('hero-logo');
 heroImg.src = heroLogo;
+document.body.style.backgroundColor = bgColor;
+document.body.style.fontFamily = fontFamily;
 
-// ฟังก์ชัน set HERO LOGO
 function setHeroLogo(){
-  const url = document.getElementById('heroInput').value.trim();
-  heroLogo = url;
-  heroImg.src = url;
+  heroLogo = document.getElementById('heroInput').value.trim();
+  heroImg.src = heroLogo;
 }
 
-// สร้าง UI แก้ไขสมาชิก
+// สร้าง UI แก้ไขสมาชิก + เปลี่ยนชื่อกลุ่ม
 const groupsContainer = document.getElementById('groups-container');
 
 function renderGroups(){
@@ -75,7 +88,11 @@ function renderGroups(){
   for(let group in membersData){
     const groupDiv = document.createElement('div');
     groupDiv.className = 'group-section';
-    groupDiv.innerHTML = `<h2>${group.toUpperCase()}</h2>`;
+    
+    // ชื่อกลุ่มสามารถแก้ไขได้
+    groupDiv.innerHTML = `
+      <h2><input type="text" class="group-name-input" value="${group.toUpperCase()}"></h2>
+    `;
     
     // แสดงสมาชิก
     membersData[group].forEach((member,index)=>{
@@ -117,7 +134,7 @@ function addMember(group){
   const fb = groupDiv.querySelector('.new-fb').value.trim();
   const img = groupDiv.querySelector('.new-img').value.trim();
   if(name && fb){
-    membersData[group].push({name:name, fb:fb, img:img});
+    membersData[group].push({name,fb,img});
     renderGroups();
   } else {
     alert('กรุณากรอก Name และ Facebook Link');
@@ -127,18 +144,34 @@ function addMember(group){
 function saveAll(){
   // อัปเดตค่าจาก input ของสมาชิก
   document.querySelectorAll('.group-section').forEach((groupDiv,gi)=>{
-    const groupName = Object.keys(membersData)[gi];
-    membersData[groupName].forEach((member,mi)=>{
+    const oldGroupName = Object.keys(membersData)[gi];
+    const newGroupName = groupDiv.querySelector('.group-name-input').value.trim().toLowerCase().replace(/\s/g,'');
+    if(newGroupName && newGroupName !== oldGroupName){
+      // เปลี่ยน key ใน membersData
+      membersData[newGroupName] = membersData[oldGroupName];
+      delete membersData[oldGroupName];
+    }
+    // อัปเดตสมาชิก
+    membersData[newGroupName || oldGroupName].forEach((member,mi)=>{
       const itemDiv = groupDiv.querySelectorAll('.member-item')[mi];
       member.name = itemDiv.querySelector('.name-input').value.trim();
       member.fb = itemDiv.querySelector('.fb-input').value.trim();
       member.img = itemDiv.querySelector('.img-input').value.trim();
     });
   });
-  
-  // เก็บ localStorage
-  localStorage.setItem('membersData', JSON.stringify({members:membersData, hero:heroLogo}));
-  alert('บันทึกเรียบร้อยแล้ว! สามารถไปดูหน้า listname.html');
+
+  // เก็บ FONT และ BG
+  const bgColorInput = document.getElementById('bgInput').value;
+  const fontInput = document.getElementById('fontInput').value.trim() || 'Arial, Helvetica, sans-serif';
+
+  localStorage.setItem('membersData', JSON.stringify({
+    members: membersData,
+    hero: heroLogo,
+    bg: bgColorInput,
+    font: fontInput
+  }));
+
+  alert('บันทึกเรียบร้อย! รีหน้า index.html หรือ listname.html จะเห็นผลทันที');
 }
 
 renderGroups();
