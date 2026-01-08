@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>เพิ่มสมาชิกใหม่ | DRAKESTYLE</title>
+<style>
+body{background:#000;color:#fff;font-family:Arial, Helvetica, sans-serif;text-align:center;padding:50px;}
+input[type=text]{padding:5px;margin:5px;width:250px;border-radius:5px;border:none;}
+select{padding:5px;margin:5px;border-radius:5px;}
+button{padding:5px 10px;margin:5px;border:none;border-radius:5px;background:#00aaff;color:#fff;cursor:pointer;}
+button:hover{background:#0088cc;}
+</style>
+</head>
+<body>
+
+<h1>เพิ่มสมาชิกใหม่</h1>
+<p>กรอกข้อมูลสมาชิกใหม่</p>
+
+<label>ชื่อสมาชิก:</label>
+<input type="text" id="name" placeholder="เช่น COMING SOON 3"><br>
+
+<label>Facebook Link:</label>
+<input type="text" id="fb" placeholder="https://facebook.com/..."><br>
+
+<label>รูปโปรไฟล์ URL:</label>
+<input type="text" id="img" placeholder="https://..."><br>
+
+<label>เลือกกลุ่ม:</label>
+<select id="group">
+  <option value="comingsoon">COMING SOON</option>
+  <option value="drakestyle">DRAKESTYLE</option>
+  <option value="tested">TESTE'D</option>
+</select><br>
+
+<button onclick="addMember()">บันทึกสมาชิกใหม่</button><br><br>
+<a href="admin.html">กลับไปหน้า ADMIN</a>
+
+<script>
+let stored = JSON.parse(localStorage.getItem('membersData'));
+let membersData = stored ? stored.members : {
+  comingsoon:[{name:'COMING SOON 1', fb:'https://facebook.com/comingsoon1', img:''}],
+  drakestyle:[{name:'DRAKESTYLE', fb:'https://facebook.com/drakestyle', img:''}],
+  tested:[{name:"TESTE'D 1", fb:'https://facebook.com/tested1', img:''}]
+};
+let fontFamily = stored && stored.font ? stored.font : 'Arial, Helvetica, sans-serif';
+let bgColor = stored && stored.bg ? stored.bg : '#000';
+
+function addMember(){
+  const name = document.getElementById('name').value.trim();
+  const fb = document.getElementById('fb').value.trim();
+  const img = document.getElementById('img').value.trim();
+  const group = document.getElementById('group').value;
+
+  if(!name || !fb) { alert('กรุณากรอกชื่อและ Facebook Link'); return; }
+
+  if(!membersData[group]) membersData[group] = [];
+  membersData[group].push({name, fb, img});
+
+  localStorage.setItem('membersData', JSON.stringify({members:membersData,font:fontFamily,bg:bgColor}));
+
+  alert('เพิ่มสมาชิกใหม่เรียบร้อย!');
+  document.getElementById('name').value='';
+  document.getElementById('fb').value='';
+  document.getElementById('img').value='';
+}
+</script>
+
+</body>
+</html>
