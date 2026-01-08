@@ -7,10 +7,10 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <style>
 body{margin:0;padding:0;background:#000;color:#fff;font-family:Arial, Helvetica, sans-serif;}
+.back-btn { display:inline-block; margin:10px; text-decoration:none; color:#00aaff; font-weight:bold; }
 header{padding:40px 20px;border-bottom:1px solid #222;text-align:center;}
 header h1{font-size:42px;letter-spacing:4px;}
 header p{color:#aaa;margin-top:10px;}
-.back a{color:#fff;text-decoration:none;font-size:14px;margin-top:10px;display:inline-block;}
 .section{padding:50px 20px;}
 .group-title{font-size:28px;text-align:left;margin:40px 0 20px 0;letter-spacing:2px;border-bottom:1px solid #444;padding-bottom:10px;}
 .cards-container{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;}
@@ -29,8 +29,8 @@ footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;tex
 <header>
   <h1>LISTNAME</h1>
   <p>DRAKESTYLE MEMBER</p>
+  <a href="index.html" class="back-btn">← BACK TO HOME</a>
   <img id="site-logo" src="" alt="โลโก้">
-  <div class="back"><a href="index.html">← BACK TO HOME</a></div>
 </header>
 
 <section class="section" id="members-section"></section>
@@ -41,33 +41,23 @@ footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;tex
 const urlParams = new URLSearchParams(window.location.search);
 const selectedCard = urlParams.get('card');
 
-// โหลดจาก localStorage หรือ default
 let stored = JSON.parse(localStorage.getItem('membersData'));
 let membersData = stored ? stored.members : {
   comingsoon:[{name:'COMING SOON 1', fb:'https://facebook.com/comingsoon1', img:''}],
   drakestyle:[{name:'DRAKESTYLE', fb:'https://facebook.com/drakestyle', img:''}],
   tested:[{name:"TESTE'D 1", fb:'https://facebook.com/tested1', img:''}]
 };
-let heroLogo = stored && stored.hero ? stored.hero : '';
 let fontFamily = stored && stored.font ? stored.font : 'Arial, Helvetica, sans-serif';
 let bgColor = stored && stored.bg ? stored.bg : '#000';
-let logoURL = stored && stored.logo ? stored.logo : '';
-let showLogo = stored && stored.showLogo ? stored.showLogo : 'no';
+let logoURL = stored && stored.hero ? stored.hero : '';
 
 document.body.style.fontFamily = fontFamily;
 document.body.style.backgroundColor = bgColor;
 
-if(showLogo==='yes' && logoURL){
+if(logoURL){
   let logo = document.getElementById('site-logo');
   logo.src = logoURL;
   logo.style.display='block';
-}
-
-// HERO LOGO
-if(heroLogo){
-  const heroLogoImg = document.getElementById('site-logo');
-  heroLogoImg.src = heroLogo;
-  heroLogoImg.style.display='block';
 }
 
 const section = document.getElementById('members-section');
@@ -94,7 +84,6 @@ function renderGroup(groupName, members){
   section.appendChild(container);
 }
 
-// แสดงเฉพาะกลุ่มถ้ามี query
 if(selectedCard && membersData[selectedCard]){
   renderGroup(selectedCard, membersData[selectedCard]);
 }else{
