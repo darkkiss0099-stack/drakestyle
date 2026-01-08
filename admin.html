@@ -9,38 +9,47 @@ body{background:#000;color:#fff;font-family:Arial, Helvetica, sans-serif;text-al
 input{padding:5px;margin:5px;width:250px;border-radius:5px;border:none;}
 button{padding:5px 10px;border:none;border-radius:5px;background:#00aaff;color:#fff;cursor:pointer;}
 button:hover{background:#0088cc;}
-.member-box{border:2px solid #fff;padding:15px;margin:10px;border-radius:10px;}
-a{color:#00aaff;text-decoration:none;}
+.member-box{border:2px solid #fff;padding:15px;margin:10px;border-radius:10px;text-align:left;}
+label{display:block;margin-top:5px;}
 </style>
 </head>
 <body>
 
 <h1>ADMIN PANEL</h1>
-<p>แก้ไขรายชื่อสมาชิกและ Facebook Link</p>
+<p>แก้ไขรายชื่อสมาชิก, Facebook, รูปโปรไฟล์, FONT และ Background</p>
+
+<label>เลือก FONT ตัวอักษร:</label>
+<input type="text" id="fontInput" placeholder="เช่น Arial" oninput="changeFont()">
+<label>เปลี่ยน Background Color:</label>
+<input type="color" id="bgColor" value="#000000" onchange="changeBG()">
+
 <div id="members"></div>
 <button onclick="addMember()">เพิ่มสมาชิกใหม่</button><br><br>
 <a href="index.html">กลับหน้าเว็บ</a>
 
 <script>
 let membersData = JSON.parse(localStorage.getItem('members')) || {
-  comingsoon:[{name:'COMING SOON 1', fb:'https://facebook.com/comingsoon1'},{name:'COMING SOON 2', fb:'https://facebook.com/comingsoon2'}],
-  drakestyle:[{name:'DRAKESTYLE', fb:'https://facebook.com/drakestyle'}],
-  tested:[{name:'TESTED 1', fb:'https://facebook.com/tested1'}]
+  comingsoon:[{name:'COMING SOON 1', fb:'https://facebook.com/comingsoon1', img:''},{name:'COMING SOON 2', fb:'https://facebook.com/comingsoon2', img:''}],
+  drakestyle:[{name:'DRAKESTYLE', fb:'https://facebook.com/drakestyle', img:''}],
+  tested:[{name:"TESTE'D 1", fb:'https://facebook.com/tested1', img:''}]
 };
 
 function renderMembers(){
-  const membersDiv = document.getElementById('members');
-  membersDiv.innerHTML = '';
+  const container = document.getElementById('members');
+  container.innerHTML='';
   for(let card in membersData){
     const h3 = document.createElement('h3'); h3.textContent = card.toUpperCase();
-    membersDiv.appendChild(h3);
+    container.appendChild(h3);
     membersData[card].forEach((m,i)=>{
       const div = document.createElement('div'); div.className='member-box';
-      div.innerHTML=`ชื่อ: <input value="${m.name}" id="${card}-name-${i}"><br>
-                     Facebook: <input value="${m.fb}" id="${card}-fb-${i}"><br>
-                     <button onclick="saveMember('${card}',${i})">บันทึก</button>
-                     <button onclick="deleteMember('${card}',${i})">ลบ</button>`;
-      membersDiv.appendChild(div);
+      div.innerHTML=`
+        <label>ชื่อ:</label><input value="${m.name}" id="${card}-name-${i}">
+        <label>Facebook Link:</label><input value="${m.fb}" id="${card}-fb-${i}">
+        <label>รูปโปรไฟล์ URL:</label><input value="${m.img}" id="${card}-img-${i}">
+        <button onclick="saveMember('${card}',${i})">บันทึก</button>
+        <button onclick="deleteMember('${card}',${i})">ลบ</button>
+      `;
+      container.appendChild(div);
     });
   }
 }
@@ -48,7 +57,8 @@ function renderMembers(){
 function saveMember(card,index){
   const name=document.getElementById(`${card}-name-${index}`).value;
   const fb=document.getElementById(`${card}-fb-${index}`).value;
-  membersData[card][index]={name,fb};
+  const img=document.getElementById(`${card}-img-${index}`).value;
+  membersData[card][index]={name,fb,img};
   localStorage.setItem('members', JSON.stringify(membersData));
   alert('บันทึกเรียบร้อย');
 }
@@ -64,10 +74,17 @@ function deleteMember(card,index){
 function addMember(){
   const card=prompt('ใส่กลุ่มสมาชิก (comingsoon / drakestyle / tested)');
   if(card && membersData[card]){
-    membersData[card].push({name:'ชื่อใหม่', fb:'#'});
+    membersData[card].push({name:'ชื่อใหม่', fb:'#', img:''});
     localStorage.setItem('members', JSON.stringify(membersData));
     renderMembers();
-  } else {alert('กลุ่มไม่ถูกต้อง');}
+  }else{alert('กลุ่มไม่ถูกต้อง');}
+}
+
+function changeFont(){
+  document.body.style.fontFamily=document.getElementById('fontInput').value;
+}
+function changeBG(){
+  document.body.style.backgroundColor=document.getElementById('bgColor').value;
 }
 
 renderMembers();
