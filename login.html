@@ -5,13 +5,56 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ADMIN LOGIN | DRAKESTYLE</title>
 <style>
-body{margin:0;padding:0;background:#000;font-family:Arial, Helvetica, sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;color:#fff;}
-.login-box{background:#111;padding:40px;border-radius:15px;border:2px solid #00aaff;width:300px;text-align:center;}
-.login-box h2{margin-bottom:30px;letter-spacing:2px;color:#00aaff;}
-.login-box input{width:100%;padding:10px;margin:10px 0;border:none;border-radius:5px;}
-.login-box button{width:100%;padding:10px;margin-top:15px;border:none;border-radius:5px;background:#00aaff;color:#fff;font-weight:bold;cursor:pointer;}
-.login-box button:hover{background:#0088cc;}
-.error{color:red;font-size:14px;margin-top:10px;}
+body{
+  margin:0;
+  padding:0;
+  background:#000;
+  font-family:Arial, Helvetica, sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  color:#fff;
+}
+.login-box{
+  background:#111;
+  padding:40px;
+  border-radius:15px;
+  border:2px solid #00aaff;
+  width:300px;
+  text-align:center;
+}
+.login-box h2{
+  margin-bottom:30px;
+  letter-spacing:2px;
+  color:#00aaff;
+}
+.login-box input{
+  width:100%;
+  padding:10px;
+  margin:10px 0;
+  border:none;
+  border-radius:5px;
+}
+.login-box button{
+  width:100%;
+  padding:10px;
+  margin-top:15px;
+  border:none;
+  border-radius:5px;
+  background:#00aaff;
+  color:#fff;
+  font-weight:bold;
+  cursor:pointer;
+}
+.login-box button:hover{
+  background:#0088cc;
+}
+.error{
+  color:red;
+  font-size:14px;
+  margin-top:10px;
+}
 </style>
 </head>
 <body>
@@ -22,17 +65,30 @@ body{margin:0;padding:0;background:#000;font-family:Arial, Helvetica, sans-serif
   <button onclick="login()">LOGIN</button>
   <div class="error" id="error"></div>
 </div>
+
 <script>
-function login(){
+const correctEmail = 'drakestan2026';
+const correctPassword = 'drakestyle588';
+
+function login() {
   const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value.trim();
   const errorDiv = document.getElementById('error');
-  if(email==='drakestan2026' && password==='drakestyle588'){
-    window.location.href='admin.html';
+
+  if(email === correctEmail && password === correctPassword){
+    window.location.href = 'admin.html';
   } else {
-    errorDiv.textContent='Email หรือ Password ไม่ถูกต้อง';
+    errorDiv.textContent = 'Email หรือ Password ไม่ถูกต้อง';
   }
 }
+
+// กด Enter ก็ LOGIN ได้
+document.getElementById('password').addEventListener('keyup', function(e){
+  if(e.key === 'Enter') login();
+});
+document.getElementById('email').addEventListener('keyup', function(e){
+  if(e.key === 'Enter') login();
+});
 </script>
 </body>
 </html>
