@@ -4,45 +4,157 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DRAKESTYLE</title>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-<style id="dynamic-style">
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:Arial, Helvetica, sans-serif;background:#000;color:#fff;text-align:center;}
-header{padding:40px 20px;border-bottom:1px solid #222;}
-header h1{font-size:48px;letter-spacing:4px;}
-header p{margin-top:10px;color:#aaa;}
-nav{display:flex;justify-content:center;gap:30px;padding:20px;border-bottom:1px solid #222;}
-nav a{color:#fff;text-decoration:none;}
-.hero{padding:80px 20px;}
-.hero-link{text-decoration:none;}
-.hero-box{display:inline-block;padding:25px 50px;border:3px solid #fff;border-radius:20px;transition:0.3s;}
-.hero-box h2{font-size:36px;letter-spacing:3px;color:#fff;}
-.hero-box:hover{box-shadow:inset 0 0 0 1px #00aaff,0 0 14px rgba(0,170,255,0.5);background:rgba(0,170,255,0.06);}
-.section{padding:60px 20px;border-top:1px solid #222;}
-.section h3{font-size:28px;margin-bottom:40px;}
-.cards{display:flex;justify-content:center;gap:30px;flex-wrap:wrap;}
-.card-link{text-decoration:none;color:inherit;}
-.card{width:260px;padding:25px;background:#111;border:3px solid #fff;border-radius:18px;transition:0.3s;text-align:center;}
-.card h2{color:#fff;letter-spacing:2px;margin-bottom:8px;}
-.card p{color:#fff;font-size:14px;}
-.card:hover{box-shadow:inset 0 0 0 1px #00aaff,0 0 14px rgba(0,170,255,0.5);background:rgba(0,170,255,0.06);transform:scale(1.05);}
-footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;text-align:center;}
-#site-logo{width:80px;margin-top:10px;display:none;}
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #000;
+  color: #fff;
+  text-align: center;
+}
+
+/* ===== HEADER ===== */
+header {
+  padding: 40px 20px;
+  border-bottom: 1px solid #222;
+}
+
+header h1 {
+  font-size: 48px;
+  letter-spacing: 4px;
+}
+
+header p {
+  margin-top: 10px;
+  color: #aaa;
+}
+
+/* ===== NAV ===== */
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 20px;
+  border-bottom: 1px solid #222;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+}
+
+/* ===== HERO ===== */
+.hero {
+  padding: 80px 20px;
+}
+
+.hero-link {
+  text-decoration: none;
+}
+
+.hero-box {
+  display: inline-block;
+  padding: 25px 50px;
+  border: 3px solid #fff;
+  border-radius: 20px;
+  transition: 0.3s;
+}
+
+.hero-box h2 {
+  font-size: 36px;
+  letter-spacing: 3px;
+  color: #fff;
+}
+
+.hero-box:hover {
+  box-shadow:
+    inset 0 0 0 1px #00aaff,
+    0 0 14px rgba(0,170,255,0.5);
+  background: rgba(0,170,255,0.06);
+}
+
+/* ===== SECTION ===== */
+.section {
+  padding: 60px 20px;
+  border-top: 1px solid #222;
+}
+
+.section h3 {
+  font-size: 28px;
+  margin-bottom: 40px;
+}
+
+/* ===== CARDS ===== */
+.cards {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card {
+  width: 260px;
+  padding: 25px;
+  background: #111;
+  border: 3px solid #fff;
+  border-radius: 18px;
+  transition: 0.3s;
+  text-align: center;
+}
+
+.card h2 {
+  color: #fff;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.card p {
+  color: #fff;
+  font-size: 14px;
+}
+
+.card:hover {
+  box-shadow:
+    inset 0 0 0 1px #00aaff,
+    0 0 14px rgba(0,170,255,0.5);
+  background: rgba(0,170,255,0.06);
+  transform: scale(1.05);
+}
+
+/* ===== FOOTER ===== */
+footer {
+  margin-top: 60px;
+  padding: 30px;
+  border-top: 1px solid #222;
+  font-size: 14px;
+}
 </style>
 </head>
+
 <body>
 
 <header>
   <h1>DRAKESTYLE</h1>
   <p>BET WEAPON NEVER LOSE</p>
-  <img id="site-logo" src="" alt="โลโก้">
 </header>
 
 <nav>
   <a href="#">HOME</a>
   <a href="#">ABOUT</a>
   <a href="#">CONTACT</a>
-  <a href="admin.html">ADMIN LOGIN</a>
+  <!-- แก้ตรงนี้ให้ไป login.html -->
+  <a href="login.html">ADMIN LOGIN</a>
 </nav>
 
 <section class="hero">
@@ -80,20 +192,9 @@ footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;tex
   </div>
 </section>
 
-<footer>© 2026 DRAKE | DESIGNED BY CRYNET</footer>
-
-<script>
-let stored = JSON.parse(localStorage.getItem('membersData'));
-if(stored){
-  document.body.style.fontFamily = stored.font || 'Arial, Helvetica, sans-serif';
-  document.body.style.backgroundColor = stored.bg || '#000';
-  if(stored.showLogo==='yes' && stored.logo){
-    let logo = document.getElementById('site-logo');
-    logo.src = stored.logo;
-    logo.style.display = 'block';
-  }
-}
-</script>
+<footer>
+  © 2026 DRAKE | DESIGNED BY CRYNET
+</footer>
 
 </body>
 </html>
