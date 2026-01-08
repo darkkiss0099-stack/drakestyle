@@ -27,110 +27,29 @@ h1{color:#00aaff;text-align:center;margin-bottom:30px;}
 </head>
 <body>
 <div class="container">
-  <h1>ADMIN PANEL | DRAKESTYLE</h1>
+<h1>ADMIN PANEL | DRAKESTYLE</h1>
 
-  <!-- ตั้งค่า HERO LOGO -->
-  <div>
-    <label>ใส่รูปหน้าแรก (HERO) สำหรับหน้า Index:</label>
-    <input type="text" id="heroInput" placeholder="วาง URL รูป">
-    <button onclick="setHeroLogo()">SET HERO LOGO</button>
-    <br>
-    <img id="hero-logo" src="" alt="HERO LOGO">
-  </div>
+<div>
+<label>ใส่ HERO LOGO:</label>
+<input type="text" id="heroInput" placeholder="วาง URL รูป">
+<button onclick="setHeroLogo()">SET HERO LOGO</button>
+<br>
+<img id="hero-logo" src="" alt="HERO LOGO">
+</div>
 
-  <hr>
+<hr>
 
-  <!-- ตั้งค่าพื้นหลัง / ฟอนต์ -->
-  <div>
-    <label>เปลี่ยนพื้นหลัง: </label>
-    <input type="color" id="bgInput" value="#000000">
-    <label>เปลี่ยนฟอนต์: </label>
-    <input type="text" id="fontInput" placeholder="Arial, Helvetica, sans-serif">
-  </div>
+<div>
+<label>เปลี่ยนพื้นหลัง:</label>
+<input type="color" id="bgInput" value="#000000">
+<label>เปลี่ยนฟอนต์:</label>
+<input type="text" id="fontInput" placeholder="Arial, Helvetica, sans-serif">
+</div>
 
-  <hr>
-
-  <div id="groups-container"></div>
-
-  <button class="save-btn" onclick="saveAll()">บันทึกการเปลี่ยนแปลง</button>
+<hr>
+<div id="groups-container"></div>
+<button class="save-btn" onclick="saveAll()">บันทึกการเปลี่ยนแปลง</button>
 </div>
 
 <script>
-let stored = JSON.parse(localStorage.getItem('membersData')) || {};
-let membersData = stored.members || {
-  comingsoon:[{name:'COMING SOON 1', fb:'https://facebook.com/comingsoon1', img:''}],
-  drakestyle:[{name:'DRAKESTYLE', fb:'https://facebook.com/drakestyle', img:''}],
-  tested:[{name:"TESTE'D 1", fb:'https://facebook.com/tested1', img:''}]
-};
-
-let heroLogo = stored.hero || '';
-document.getElementById('hero-logo').src = heroLogo;
-
-function setHeroLogo(){
-  const url = document.getElementById('heroInput').value.trim();
-  heroLogo = url;
-  document.getElementById('hero-logo').src = url;
-}
-
-const groupsContainer = document.getElementById('groups-container');
-
-function renderGroups(){
-  groupsContainer.innerHTML = '';
-  for(let group in membersData){
-    const groupDiv = document.createElement('div');
-    groupDiv.className='group-section';
-    groupDiv.innerHTML = `<h2>${group.toUpperCase()}</h2>`;
-
-    membersData[group].forEach((member,index)=>{
-      const memberDiv = document.createElement('div');
-      memberDiv.className='member-item';
-      memberDiv.innerHTML = `
-        <img src="${member.img || 'https://graph.facebook.com/'+member.fb.split('/').pop()+'/picture?type=large'}">
-        <input type="text" value="${member.name}" class="name-input" placeholder="Name">
-        <input type="text" value="${member.fb}" class="fb-input" placeholder="Facebook Link">
-        <input type="text" value="${member.img}" class="img-input" placeholder="Profile Image URL">
-        <button onclick="deleteMember('${group}',${index})"><i class="fas fa-trash"></i> ลบ</button>
-      `;
-      groupDiv.appendChild(memberDiv);
-    });
-
-    const addDiv = document.createElement('div');
-    addDiv.className='add-member';
-    addDiv.innerHTML = `
-      <input type="text" class="new-name" placeholder="Name">
-      <input type="text" class="new-fb" placeholder="Facebook Link">
-      <input type="text" class="new-img" placeholder="Profile Image URL">
-      <button onclick="addMember('${group}')">เพิ่มสมาชิก</button>
-    `;
-    groupDiv.appendChild(addDiv);
-
-    groupsContainer.appendChild(groupDiv);
-  }
-}
-
-function deleteMember(group,index){ membersData[group].splice(index,1); renderGroups(); }
-function addMember(group){
-  const groupDiv = event.target.parentElement;
-  const name = groupDiv.querySelector('.new-name').value.trim();
-  const fb = groupDiv.querySelector('.new-fb').value.trim();
-  const img = groupDiv.querySelector('.new-img').value.trim();
-  if(name && fb){ membersData[group].push({name,name,fb,img}); renderGroups(); } 
-  else alert('กรุณากรอก Name และ Facebook Link');
-}
-
-function saveAll(){
-  const bgColor = document.getElementById('bgInput').value;
-  const fontFamily = document.getElementById('fontInput').value.trim() || 'Arial, Helvetica, sans-serif';
-
-  document.querySelectorAll('.group-section').forEach((groupDiv,gi)=>{
-    const groupName = Object.keys(membersData)[gi];
-    membersData[groupName].forEach((member,mi)=>{
-      const itemDiv = groupDiv.querySelectorAll('.member-item')[mi];
-      member.name = itemDiv.querySelector('.name-input').value.trim();
-      member.fb = itemDiv.querySelector('.fb-input').value.trim();
-      member.img = itemDiv.querySelector('.img-input').value.trim();
-    });
-  });
-
-  localStorage.setItem('membersData', JSON.stringify({members:membersData, hero:heroLogo, bg:bgColor, font:fontFamily}));
-  alert('บันท
+let stored = JSON.parse(localStorage.getItem('membersData')) ||
