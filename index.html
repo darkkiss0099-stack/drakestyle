@@ -38,7 +38,7 @@ footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;}
   <a href="#">HOME</a>
   <a href="#">ABOUT</a>
   <a href="#">CONTACT</a>
-  <a href="login.html">ADMIN LOGIN</a>
+  <a href="#" onclick="adminLogin()">ADMIN LOGIN</a>
 </nav>
 
 <section class="hero">
@@ -49,7 +49,6 @@ footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;}
 
 <section class="section">
   <h3>CHECK LISTNAME</h3>
-
   <div class="cards">
     <a href="listname.html?card=comingsoon" class="card-link">
       <div class="card">
@@ -77,6 +76,18 @@ footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;}
 <footer>
   © 2026 DRAKE | DESIGNED BY CRYNET
 </footer>
+
+<script>
+// ฟังก์ชัน LOGIN
+function adminLogin(){
+    const password = prompt("กรุณาใส่รหัส ADMIN:");
+    if(password === "1234"){ // <-- เปลี่ยนรหัสที่นี่ได้
+        window.location.href = "admin.html";
+    } else {
+        alert("รหัสไม่ถูกต้อง");
+    }
+}
+</script>
 
 </body>
 </html>
