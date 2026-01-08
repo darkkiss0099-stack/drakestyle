@@ -33,7 +33,7 @@ footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;tex
 </header>
 
 <section class="section" id="members-section">
-  <!-- กลุ่มสมาชิกจะแสดงที่นี่ -->
+  <!-- แสดงสมาชิก -->
 </section>
 
 <footer>
@@ -41,11 +41,9 @@ footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;tex
 </footer>
 
 <script>
-// ดึงกลุ่มจาก URL
 const urlParams = new URLSearchParams(window.location.search);
 const selectedCard = urlParams.get('card');
 
-// ข้อมูลสมาชิกจาก localStorage หรือค่า default
 let membersData = JSON.parse(localStorage.getItem('members')) || {
   comingsoon:[
     {name:'COMING SOON 1', fb:'https://facebook.com/comingsoon1'},
@@ -81,11 +79,9 @@ function renderGroup(groupName, members){
   section.appendChild(container);
 }
 
-// ถ้าเลือกกลุ่มเฉพาะ
 if(selectedCard && membersData[selectedCard]){
   renderGroup(selectedCard, membersData[selectedCard]);
 } else {
-  // แสดงทุกกลุ่ม
   for(let group in membersData){
     renderGroup(group, membersData[group]);
   }
