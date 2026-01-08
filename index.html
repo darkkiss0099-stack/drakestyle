@@ -6,7 +6,11 @@
   <title>DRAKESTYLE</title>
 
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       font-family: Arial, Helvetica, sans-serif;
@@ -60,18 +64,39 @@
       width: 100%;
     }
 
+    /* ===== HERO ===== */
+
     .hero {
       padding: 80px 20px;
     }
 
-    .hero h2 {
+    .hero-link {
+      display: inline-block;
+      padding: 20px 45px;
+      border: 5px solid #fff;
+      border-radius: 22px;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .hero-link h2 {
       font-size: 36px;
-      margin-bottom: 15px;
+      color: #fff;
+      letter-spacing: 2px;
+    }
+
+    .hero-link:hover {
+      border-color: #00aaff;
+      box-shadow: 0 0 16px rgba(0, 170, 255, 0.6);
+      background: rgba(0, 170, 255, 0.08);
     }
 
     .hero p {
+      margin-top: 15px;
       color: #bbb;
     }
+
+    /* ===== SECTION ===== */
 
     .section {
       padding: 60px 20px;
@@ -83,7 +108,7 @@
       margin-bottom: 40px;
     }
 
-    /* ====== CARD ====== */
+    /* ===== CARDS ===== */
 
     .cards {
       display: flex;
@@ -101,37 +126,41 @@
       width: 260px;
       padding: 25px;
       background: #111;
-      border: 3px solid #fff;
+      border: 5px solid #fff;
+      border-radius: 18px;
       transition: 0.3s;
       cursor: pointer;
     }
 
     .card h2 {
-      color: #00aaff;
+      color: #fff;
       margin-bottom: 8px;
       letter-spacing: 2px;
     }
 
     .card p {
-      color: #4db8ff;
+      color: #ccc;
       font-size: 14px;
     }
 
+    /* ===== เอฟเฟกต์เรืองแสง ===== */
     .card:hover {
+      border-color: #00aaff;
+      box-shadow: 0 0 16px rgba(0, 170, 255, 0.6);
+      background: rgba(0, 170, 255, 0.08);
       transform: scale(1.05);
-      background: #00aaff;
     }
 
     .card:hover h2,
     .card:hover p {
-      color: #000;
+      color: #fff;
     }
 
     footer {
       margin-top: 60px;
       padding: 30px;
       border-top: 1px solid #222;
-      color: #fff;
+      color: #aaa;
       font-size: 14px;
     }
   </style>
@@ -151,95 +180,39 @@
   </nav>
 
   <section class="hero">
-    <h2>HOUSE OF DRAKE</h2>
+    <a href="list.html" class="hero-link">
+      <h2>HOUSE OF DRAKE</h2>
+    </a>
     <p>WELCOME TO DRAKE</p>
   </section>
 
   <section class="section">
     <h3>CHECK LISTNAME</h3>
 
-<div class="cards">
-<!DOCTYPE html>
-<html lang="th">
-<head>
-  <meta charset="UTF-8">
+    <div class="cards">
 
-  <!-- 👇 CSS ต้องอยู่ตรงนี้ -->
-  <style>
-    .card h2 {
-      color: white;
-    }
+      <a href="list.html" class="card-link">
+        <div class="card">
+          <h2>COMING SOON</h2>
+          <p>MEMBER</p>
+        </div>
+      </a>
 
-    .card p {
-      color: white;
-    }
-  </style>
+      <a href="list.html" class="card-link">
+        <div class="card">
+          <h2>DRAKESTYLE</h2>
+          <p>LEADER</p>
+        </div>
+      </a>
 
-</head>
-<body>
+      <a href="list.html" class="card-link">
+        <div class="card">
+          <h2>TESTE'D</h2>
+          <p>MEMBER</p>
+        </div>
+      </a>
 
-  <a href="list.html" class="card-link">
-    <div class="card">
-      <h2>COMING SOON</h2>
-      <p>MEMBER</p>
     </div>
-  </a>
-<!DOCTYPE html>
-<html lang="th">
-<head>
-  <meta charset="UTF-8">
-
-  <!-- 👇 CSS ต้องอยู่ตรงนี้ -->
-  <style>
-    .card h2 {
-      color: white;
-    }
-
-    .card p {
-      color: white;
-    }
-  </style>
-
-</head>
-<body>
-
-  <a href="list.html" class="card-link">
-    <div class="card">
-      <h2>DRAKESTYLE</h2>
-      <p>LEADER</p>
-    </div>
-  </a>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="th">
-<head>
-  <meta charset="UTF-8">
-
-  <!-- 👇 CSS ต้องอยู่ตรงนี้ -->
-  <style>
-    .card h2 {
-      color: white;
-    }
-
-    .card p {
-      color: white;
-    }
-  </style>
-
-</head>
-<body>
-
-  <a href="list.html" class="card-link">
-    <div class="card">
-      <h2>TESTE'D</h2>
-      <p>MEMBER</p>
-    </div>
-  </a>
-
-</div>
-
   </section>
 
   <footer>
@@ -248,19 +221,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
