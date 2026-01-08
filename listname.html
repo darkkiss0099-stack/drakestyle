@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LISTNAME | DRAKESTYLE</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-<style>
+<style id="dynamic-style">
 body{margin:0;padding:0;background:#000;color:#fff;font-family:Arial, Helvetica, sans-serif;}
 header{padding:40px 20px;border-bottom:1px solid #222;text-align:center;}
 header h1{font-size:42px;letter-spacing:4px;}
@@ -39,7 +39,9 @@ footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;tex
 const urlParams = new URLSearchParams(window.location.search);
 const selectedCard = urlParams.get('card');
 
-let membersData = JSON.parse(localStorage.getItem('members')) || {
+// ดึงข้อมูลสมาชิก + font + background จาก localStorage
+let stored = JSON.parse(localStorage.getItem('membersData'));
+let membersData = stored ? stored.members : {
   comingsoon:[
     {name:'COMING SOON 1', fb:'https://facebook.com/comingsoon1', img:''},
     {name:'COMING SOON 2', fb:'https://facebook.com/comingsoon2', img:''}
@@ -51,6 +53,12 @@ let membersData = JSON.parse(localStorage.getItem('members')) || {
     {name:"TESTE'D 1", fb:'https://facebook.com/tested1', img:''}
   ]
 };
+let fontFamily = stored && stored.font ? stored.font : 'Arial, Helvetica, sans-serif';
+let bgColor = stored && stored.bg ? stored.bg : '#000';
+
+// ปรับ font และ background
+document.body.style.fontFamily = fontFamily;
+document.body.style.backgroundColor = bgColor;
 
 const section = document.getElementById('members-section');
 
@@ -76,6 +84,7 @@ function renderGroup(groupName, members){
   section.appendChild(container);
 }
 
+// แสดงกลุ่มเฉพาะหรือทั้งหมด
 if(selectedCard && membersData[selectedCard]){
   renderGroup(selectedCard, membersData[selectedCard]);
 }else{
