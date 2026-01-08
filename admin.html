@@ -29,10 +29,10 @@ h1{color:#00aaff;text-align:center;margin-bottom:30px;}
 <div class="container">
   <h1>ADMIN PANEL | DRAKESTYLE</h1>
 
-  <!-- รูป HERO / โลโก้ -->
+  <!-- ตั้งค่า HERO LOGO -->
   <div>
-    <label>เลือกโลโก้/รูปหน้าแรก (HERO): </label>
-    <input type="text" id="heroInput" placeholder="ใส่ URL รูป">
+    <label>ใส่รูปหน้าแรก (HERO) สำหรับหน้า Index:</label>
+    <input type="text" id="heroInput" placeholder="วาง URL รูป">
     <button onclick="setHeroLogo()">SET HERO LOGO</button>
     <br>
     <img id="hero-logo" src="" alt="HERO LOGO">
@@ -40,64 +40,66 @@ h1{color:#00aaff;text-align:center;margin-bottom:30px;}
 
   <hr>
 
-  <!-- แก้ไขกลุ่มสมาชิก -->
+  <!-- ตั้งค่าพื้นหลัง / ฟอนต์ -->
+  <div>
+    <label>เปลี่ยนพื้นหลัง: </label>
+    <input type="color" id="bgInput" value="#000000">
+    <label>เปลี่ยนฟอนต์: </label>
+    <input type="text" id="fontInput" placeholder="Arial, Helvetica, sans-serif">
+  </div>
+
+  <hr>
+
   <div id="groups-container"></div>
 
   <button class="save-btn" onclick="saveAll()">บันทึกการเปลี่ยนแปลง</button>
 </div>
 
 <script>
-// โหลดข้อมูลจาก localStorage หรือใช้ default
 let stored = JSON.parse(localStorage.getItem('membersData')) || {};
 let membersData = stored.members || {
   comingsoon:[{name:'COMING SOON 1', fb:'https://facebook.com/comingsoon1', img:''}],
   drakestyle:[{name:'DRAKESTYLE', fb:'https://facebook.com/drakestyle', img:''}],
   tested:[{name:"TESTE'D 1", fb:'https://facebook.com/tested1', img:''}]
 };
+
 let heroLogo = stored.hero || '';
+document.getElementById('hero-logo').src = heroLogo;
 
-// แสดง HERO LOGO
-const heroImg = document.getElementById('hero-logo');
-heroImg.src = heroLogo;
-
-// ฟังก์ชัน set HERO LOGO
 function setHeroLogo(){
   const url = document.getElementById('heroInput').value.trim();
   heroLogo = url;
-  heroImg.src = url;
+  document.getElementById('hero-logo').src = url;
 }
 
-// สร้าง UI แก้ไขสมาชิก
 const groupsContainer = document.getElementById('groups-container');
 
 function renderGroups(){
   groupsContainer.innerHTML = '';
   for(let group in membersData){
     const groupDiv = document.createElement('div');
-    groupDiv.className = 'group-section';
+    groupDiv.className='group-section';
     groupDiv.innerHTML = `<h2>${group.toUpperCase()}</h2>`;
-    
-    // แสดงสมาชิก
+
     membersData[group].forEach((member,index)=>{
       const memberDiv = document.createElement('div');
-      memberDiv.className = 'member-item';
+      memberDiv.className='member-item';
       memberDiv.innerHTML = `
-        <img src="${member.img || 'https://graph.facebook.com/'+member.fb.split('/').pop()+'/picture?type=large'}" alt="profile">
-        <input type="text" value="${member.name}" placeholder="Name" class="name-input">
-        <input type="text" value="${member.fb}" placeholder="Facebook Link" class="fb-input">
-        <input type="text" value="${member.img}" placeholder="Profile Image URL" class="img-input">
+        <img src="${member.img || 'https://graph.facebook.com/'+member.fb.split('/').pop()+'/picture?type=large'}">
+        <input type="text" value="${member.name}" class="name-input" placeholder="Name">
+        <input type="text" value="${member.fb}" class="fb-input" placeholder="Facebook Link">
+        <input type="text" value="${member.img}" class="img-input" placeholder="Profile Image URL">
         <button onclick="deleteMember('${group}',${index})"><i class="fas fa-trash"></i> ลบ</button>
       `;
       groupDiv.appendChild(memberDiv);
     });
 
-    // เพิ่มสมาชิกใหม่
     const addDiv = document.createElement('div');
-    addDiv.className = 'add-member';
+    addDiv.className='add-member';
     addDiv.innerHTML = `
-      <input type="text" placeholder="Name" class="new-name">
-      <input type="text" placeholder="Facebook Link" class="new-fb">
-      <input type="text" placeholder="Profile Image URL" class="new-img">
+      <input type="text" class="new-name" placeholder="Name">
+      <input type="text" class="new-fb" placeholder="Facebook Link">
+      <input type="text" class="new-img" placeholder="Profile Image URL">
       <button onclick="addMember('${group}')">เพิ่มสมาชิก</button>
     `;
     groupDiv.appendChild(addDiv);
@@ -106,26 +108,20 @@ function renderGroups(){
   }
 }
 
-function deleteMember(group,index){
-  membersData[group].splice(index,1);
-  renderGroups();
-}
-
+function deleteMember(group,index){ membersData[group].splice(index,1); renderGroups(); }
 function addMember(group){
   const groupDiv = event.target.parentElement;
   const name = groupDiv.querySelector('.new-name').value.trim();
   const fb = groupDiv.querySelector('.new-fb').value.trim();
   const img = groupDiv.querySelector('.new-img').value.trim();
-  if(name && fb){
-    membersData[group].push({name:name, fb:fb, img:img});
-    renderGroups();
-  } else {
-    alert('กรุณากรอก Name และ Facebook Link');
-  }
+  if(name && fb){ membersData[group].push({name,name,fb,img}); renderGroups(); } 
+  else alert('กรุณากรอก Name และ Facebook Link');
 }
 
 function saveAll(){
-  // อัปเดตค่าจาก input ของสมาชิก
+  const bgColor = document.getElementById('bgInput').value;
+  const fontFamily = document.getElementById('fontInput').value.trim() || 'Arial, Helvetica, sans-serif';
+
   document.querySelectorAll('.group-section').forEach((groupDiv,gi)=>{
     const groupName = Object.keys(membersData)[gi];
     membersData[groupName].forEach((member,mi)=>{
@@ -135,14 +131,6 @@ function saveAll(){
       member.img = itemDiv.querySelector('.img-input').value.trim();
     });
   });
-  
-  // เก็บ localStorage
-  localStorage.setItem('membersData', JSON.stringify({members:membersData, hero:heroLogo}));
-  alert('บันทึกเรียบร้อยแล้ว! สามารถไปดูหน้า listname.html');
-}
 
-renderGroups();
-</script>
-
-</body>
-</html>
+  localStorage.setItem('membersData', JSON.stringify({members:membersData, hero:heroLogo, bg:bgColor, font:fontFamily}));
+  alert('บันท
