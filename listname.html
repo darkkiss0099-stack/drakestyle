@@ -29,7 +29,7 @@ footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;tex
 <header>
   <h1>LISTNAME</h1>
   <p>DRAKESTYLE MEMBER</p>
-  <img id="site-logo" src="" alt="โลโก้">
+  <img id="site-logo" src="" alt="HERO LOGO">
   <div class="back"><a href="index.html">← BACK TO HOME</a></div>
 </header>
 
@@ -41,7 +41,7 @@ footer{margin-top:60px;padding:30px;border-top:1px solid #222;font-size:14px;tex
 const urlParams = new URLSearchParams(window.location.search);
 const selectedCard = urlParams.get('card');
 
-// โหลดจาก localStorage หรือ default
+// โหลดข้อมูลจาก localStorage
 let stored = JSON.parse(localStorage.getItem('membersData'));
 let membersData = stored ? stored.members : {
   comingsoon:[{name:'COMING SOON 1', fb:'https://facebook.com/comingsoon1', img:''}],
@@ -49,25 +49,14 @@ let membersData = stored ? stored.members : {
   tested:[{name:"TESTE'D 1", fb:'https://facebook.com/tested1', img:''}]
 };
 let heroLogo = stored && stored.hero ? stored.hero : '';
-let fontFamily = stored && stored.font ? stored.font : 'Arial, Helvetica, sans-serif';
-let bgColor = stored && stored.bg ? stored.bg : '#000';
-let logoURL = stored && stored.logo ? stored.logo : '';
-let showLogo = stored && stored.showLogo ? stored.showLogo : 'no';
+document.body.style.fontFamily = stored && stored.font ? stored.font : 'Arial, Helvetica, sans-serif';
+document.body.style.backgroundColor = stored && stored.bg ? stored.bg : '#000';
 
-document.body.style.fontFamily = fontFamily;
-document.body.style.backgroundColor = bgColor;
-
-if(showLogo==='yes' && logoURL){
-  let logo = document.getElementById('site-logo');
-  logo.src = logoURL;
-  logo.style.display='block';
-}
-
-// HERO LOGO
+// แสดง HERO LOGO
 if(heroLogo){
-  const heroLogoImg = document.getElementById('site-logo');
-  heroLogoImg.src = heroLogo;
-  heroLogoImg.style.display='block';
+  const heroImg = document.getElementById('site-logo');
+  heroImg.src = heroLogo;
+  heroImg.style.display='block';
 }
 
 const section = document.getElementById('members-section');
@@ -94,7 +83,6 @@ function renderGroup(groupName, members){
   section.appendChild(container);
 }
 
-// แสดงเฉพาะกลุ่มถ้ามี query
 if(selectedCard && membersData[selectedCard]){
   renderGroup(selectedCard, membersData[selectedCard]);
 }else{
