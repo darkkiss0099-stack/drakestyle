@@ -85,9 +85,9 @@ footer { margin-top:60px; padding:30px; border-top:1px solid #222; font-size:14p
 // โหลด default data หรือจาก localStorage
 let stored = JSON.parse(localStorage.getItem('membersData')) || {};
 let membersData = stored.members || {
-  comingsoon: [{name:'COMING SOON', fb:'https://facebook.com/comingsoon', img:''}],
-  drakestyle: [{name:'DRAKESTYLE', fb:'https://facebook.com/drakestyle', img:''}],
-  tested: [{name:"TESTE'D", fb:'https://facebook.com/tested', img:''}]
+  FEELSENSEBROKE: [{name:'COMING SOON', fb:'https://facebook.com/comingsoon', img:''}],
+  DRAKESTYLE: [{name:'DRAKESTYLE', fb:'https://facebook.com/drakestyle', img:''}],
+  TESTE'D 1: [{name:"TESTE'D", fb:'https://facebook.com/tested', img:''}]
 };
 let heroLogo = stored.hero || '';
 document.getElementById('hero-logo').src = heroLogo || 'https://via.placeholder.com/120x120?text=HERO';
@@ -136,3 +136,4 @@ function login(){
 
 </body>
 </html>
+
