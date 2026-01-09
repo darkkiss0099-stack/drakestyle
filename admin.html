@@ -11,6 +11,8 @@ body{margin:0;padding:0;font-family:Arial, Helvetica, sans-serif;background:#000
 h1{color:#00aaff;text-align:center;margin-bottom:30px;}
 .group-section{margin-bottom:40px;border:1px solid #222;padding:15px;border-radius:10px;}
 .group-section h2 input{background:none;border:none;color:#fff;font-size:18px;font-weight:bold;width:80%;}
+/* ทำให้ชื่อกลุ่มไม่แก้ไขได้ */
+.group-section h2 input[readonly]{opacity:0.7;cursor:not-allowed;}
 .member-item{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
 .member-item input{padding:5px;border-radius:5px;border:none;}
 .member-item img{width:40px;height:40px;border-radius:50%;}
@@ -66,35 +68,50 @@ if(localStorage.getItem('loggedIn')!=='true'){
   window.location.href='login.html';
 }
 
-// โหลดข้อมูล
-let stored = JSON.parse(localStorage.getItem('membersData')) || {};
-let membersData = stored.members || {
-  comingsoon:[{name:'COMING SOON', fb:'https://facebook.com/comingsoon', img:''}],
-  drakestyle:[{name:'DRAKESTYLE', fb:'https://facebook.com/drakestyle', img:''}],
-  tested:[{name:"TESTE'D", fb:'https://facebook.com/tested', img:''}]
-};
-let heroLogo = stored.hero || '';
-let bgColor = stored.bg || '#000';
-let fontFamily = stored.font || 'Arial, Helvetica, sans-serif';
+// ใช้ JSON Online แทน localStorage
+let membersData = {};
+let heroLogo = '';
+let bgColor = '#000';
+let fontFamily = 'Arial, Helvetica, sans-serif';
 
 const heroImg = document.getElementById('hero-logo');
-heroImg.src = heroLogo;
-document.body.style.backgroundColor = bgColor;
-document.body.style.fontFamily = fontFamily;
+const groupsContainer = document.getElementById('groups-container');
 
+// โหลดข้อมูลจาก JSON Online
+fetch('https://your-server.com/members.json') // เปลี่ยนเป็น URL จริง
+  .then(res => res.json())
+  .then(data => {
+    membersData = data.members || {
+      comingsoon:[{name:'COMING SOON', fb:'https://facebook.com/comingsoon', img:''}],
+      drakestyle:[{name:'DRAKESTYLE', fb:'https://facebook.com/drakestyle', img:''}],
+      tested:[{name:"TESTE'D", fb:'https://facebook.com/tested', img:''}]
+    };
+    heroLogo = data.hero || '';
+    bgColor = data.bg || '#000';
+    fontFamily = data.font || 'Arial, Helvetica, sans-serif';
+    heroImg.src = heroLogo;
+    document.body.style.backgroundColor = bgColor;
+    document.body.style.fontFamily = fontFamily;
+    renderGroups();
+  })
+  .catch(err => {
+    console.log('โหลดข้อมูล JSON ไม่สำเร็จ, ใช้ default', err);
+    renderGroups();
+  });
+
+// ตั้ง HERO LOGO
 function setHeroLogo(){
   heroLogo = document.getElementById('heroInput').value.trim();
   heroImg.src = heroLogo;
 }
 
 // แสดงกลุ่มสมาชิก
-const groupsContainer = document.getElementById('groups-container');
 function renderGroups(){
   groupsContainer.innerHTML = '';
   for(let group in membersData){
     const groupDiv = document.createElement('div');
     groupDiv.className = 'group-section';
-    groupDiv.innerHTML = `<h2><input type="text" class="group-name-input" value="${group.toUpperCase()}"></h2>`;
+    groupDiv.innerHTML = `<h2><input type="text" class="group-name-input" value="${group.toUpperCase()}" readonly></h2>`;
 
     membersData[group].forEach((member,index)=>{
       const memberDiv = document.createElement('div');
@@ -139,16 +156,14 @@ function addMember(group){
   } else alert('กรุณากรอก Name และ Facebook Link');
 }
 
+// บันทึกข้อมูลไป JSON Online
 function saveAll(){
+  const bgColorInput = document.getElementById('bgInput').value;
+  const fontInput = document.getElementById('fontInput').value.trim() || 'Arial, Helvetica, sans-serif';
+
   document.querySelectorAll('.group-section').forEach((groupDiv,gi)=>{
-    const oldGroupName = Object.keys(membersData)[gi];
-    const newGroupNameInput = groupDiv.querySelector('.group-name-input').value.trim();
-    const newGroupName = newGroupNameInput ? newGroupNameInput.toLowerCase().replace(/\s/g,'') : oldGroupName;
-    if(newGroupName !== oldGroupName){
-      membersData[newGroupName] = membersData[oldGroupName];
-      delete membersData[oldGroupName];
-    }
-    membersData[newGroupName].forEach((member,mi)=>{
+    const groupName = Object.keys(membersData)[gi];
+    membersData[groupName].forEach((member,mi)=>{
       const itemDiv = groupDiv.querySelectorAll('.member-item')[mi];
       member.name = itemDiv.querySelector('.name-input').value.trim();
       member.fb = itemDiv.querySelector('.fb-input').value.trim();
@@ -156,20 +171,21 @@ function saveAll(){
     });
   });
 
-  const bgColorInput = document.getElementById('bgInput').value;
-  const fontInput = document.getElementById('fontInput').value.trim() || 'Arial, Helvetica, sans-serif';
-
-  localStorage.setItem('membersData', JSON.stringify({
+  const dataToSave = {
     members: membersData,
     hero: heroLogo,
     bg: bgColorInput,
     font: fontInput
-  }));
+  };
 
-  alert('บันทึกเรียบร้อย!');
+  fetch('https://your-server.com/save_members', { // เปลี่ยนเป็น endpoint จริง
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify(dataToSave)
+  })
+  .then(()=> alert('บันทึกเรียบร้อย!'))
+  .catch(()=> alert('บันทึกไม่สำเร็จ!'));
 }
-
-renderGroups();
 </script>
 
 </body>
