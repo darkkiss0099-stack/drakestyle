@@ -22,7 +22,7 @@ nav a { color:#fff; text-decoration:none; font-weight:bold; cursor:pointer; }
 .cards { display:flex; justify-content:center; gap:30px; flex-wrap:wrap; }
 .card-link { text-decoration:none; color:inherit; }
 .card { width:260px; padding:25px; background:#111; border:3px solid #fff; border-radius:18px; transition:0.3s; }
-.card h2 { color:#fff; letter-spacing:2px; margin-bottom:8px; text-align:center; }
+.card h2 { color:#fff; letter-spacing:2px; margin-bottom:8px; text-align:center; font-size:20px; word-break:break-word; } /* ปรับให้ชื่อใหญ่ๆ พอดีกับการ์ด */
 .card p { color:#fff; font-size:14px; }
 .card:hover { box-shadow: inset 0 0 0 1px #00aaff, 0 0 14px rgba(0,170,255,0.5); background: rgba(0,170,255,0.06); transform:scale(1.05);}
 footer { margin-top:60px; padding:30px; border-top:1px solid #222; font-size:14px; }
@@ -82,15 +82,31 @@ footer { margin-top:60px; padding:30px; border-top:1px solid #222; font-size:14p
 </div>
 
 <script>
-// โหลด default data หรือจาก localStorage
-let stored = JSON.parse(localStorage.getItem('membersData')) || {};
-let membersData = stored.members || {
-  feelsensebroke: [{name:'FEELSENSEBROKE', fb:'https://facebook.com/comingsoon', img:''}],
-  drakestyle: [{name:'DRAKESTYLE', fb:'https://facebook.com/drakestyle', img:''}],
-  tested: [{name:"TESTE'D", fb:'https://facebook.com/tested', img:''}]
-};
-let heroLogo = stored.hero || '';
-document.getElementById('hero-logo').src = heroLogo || 'https://via.placeholder.com/120x120?text=HERO';
+// โหลดข้อมูลจาก JSON Online หรือ fallback เป็น localStorage
+let membersData = {};
+let heroLogo = '';
+
+async function loadMembersData(){
+  try {
+    // เปลี่ยนเป็น URL JSON ของคุณจริงๆ หรือ Firebase
+    const res = await fetch('https://your-server.com/members.json');
+    const data = await res.json();
+    membersData = data.members;
+    heroLogo = data.hero;
+  } catch(err){
+    console.log('โหลด JSON ไม่สำเร็จ, ใช้ localStorage', err);
+    let stored = JSON.parse(localStorage.getItem('membersData')) || {};
+    membersData = stored.members || {
+      feelsensebroke: [{name:'FEELSENSEBROKE', fb:'https://facebook.com/comingsoon', img:''}],
+      drakestyle: [{name:'DRAKESTYLE', fb:'https://facebook.com/drakestyle', img:''}],
+      tested: [{name:"TESTE'D", fb:'https://facebook.com/tested', img:''}]
+    };
+    heroLogo = stored.hero || '';
+  }
+
+  document.getElementById('hero-logo').src = heroLogo || 'https://via.placeholder.com/120x120?text=HERO';
+  renderCards();
+}
 
 // Render การ์ด
 function renderCards(){
@@ -103,23 +119,24 @@ function renderCards(){
 
     const card = document.createElement('div');
     card.className = 'card';
-    const memberType = group.toLowerCase() === 'drakestyle' ? 'LEADER' : 'MEMBER';
-    card.innerHTML = `<h2>${group.toUpperCase()}</h2><p>${memberType}</p>`;
+    // ปรับ font-size ให้ Feelsensebroke พอดี
+    let displayName = group.toUpperCase();
+    let fontSize = '20px';
+    if(displayName.length > 12) fontSize = '16px'; // ถ้าชื่อยาวมาก ลดขนาด
+    card.innerHTML = `<h2 style="font-size:${fontSize}; word-break:break-word;">${displayName}</h2>
+                      <p>${group.toLowerCase()==='drakestyle'?'LEADER':'MEMBER'}</p>`;
 
     cardLink.appendChild(card);
     container.appendChild(cardLink);
   });
 }
 
-renderCards();
+// เรียกโหลดข้อมูลตอนเปิดหน้า
+loadMembersData();
 
 // Login Popup functions
-function openLogin(){
-  document.getElementById('login-popup').style.display = 'flex';
-}
-function closeLogin(){
-  document.getElementById('login-popup').style.display = 'none';
-}
+function openLogin(){ document.getElementById('login-popup').style.display='flex'; }
+function closeLogin(){ document.getElementById('login-popup').style.display='none'; }
 
 // Admin login
 function login(){
@@ -127,7 +144,7 @@ function login(){
   const password = document.getElementById('password').value.trim();
   const errorDiv = document.getElementById('error');
   if(email==='drakeproject' && password==='wssxncxii'){
-    window.location.href='admin.html'; // ไปหน้า admin แก้ไข
+    window.location.href='admin.html';
   } else {
     errorDiv.textContent='Email หรือ Password ไม่ถูกต้อง[หรือมึงแอบเดาของกูไม่ใช่1234หรอกนะ]';
   }
@@ -136,4 +153,3 @@ function login(){
 
 </body>
 </html>
-
